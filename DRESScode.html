@@ -72,7 +72,7 @@
     }
 
     .hero .logo-wrap {
-      width: clamp(220px, 35vw, 420px);
+      width: clamp(200px, 20vw, 3000px);
       margin-bottom: 0px;
     }
     .hero .logo-wrap img {
@@ -100,7 +100,7 @@
     .strip-track {
       display: flex;
       gap: 0;
-      animation: scrollLeft 28s linear infinite;
+      animation: scrollLeft 30s linear infinite;
       width: max-content;
     }
 
@@ -125,18 +125,22 @@
     }
 
     /* ── PANTS STRIP ── */
-    .pants-strip { padding-top: 1rem; }
+
+    .pants-strip { padding-top: 10px; }
 
     .pants-track {
       display: flex;
-      gap: 0;
-      animation: scrollRight 32s linear infinite;
       width: max-content;
-      display: flex;
-      align-items: flex-start;
+      animation: scrollRight 30s linear infinite;
+      transform: translateX(-50%);
     }
 
     .pants-track:hover { animation-play-state: paused; }
+
+    @keyframes scrollRight {
+      0%   { transform: translateX(-50%); }
+      100% { transform: translateX(0%); }
+    }
 
     .pants-track img {
       height: clamp(200px, 30vw, 340px);
@@ -146,18 +150,9 @@
       display: block;
       transition: transform 0.3s ease;
     }
-
-    .pants-track img.short {
-      height: 75px;
-    }
-
+    
     .pants-track img:hover {
       transform: scale(1.06) translateY(-4px);
-    }
-
-    @keyframes scrollRight {
-      0%   { transform: translateX(-50%); }
-      100% { transform: translateX(0); }
     }
 
     /* ── GRADIENT FADE EDGES ── */
@@ -231,7 +226,7 @@
   <section class="hero">
     <div class="logo-wrap">
       <img
-        src="/media/Logo.png"
+        src="media/Logo.png"
         alt="DRESScode. — Seu guarda-roupa virtual"
       />
     </div>
@@ -265,20 +260,20 @@
     <div class="pants-track">
       <!-- set 1 -->
       <img src="media/calcas/calca1.png" alt="Calça 1" />
-      <img src="media/calcas/calca2.png" alt="Calça 2" class="short" />
+      <img src="media/calcas/calca2.png" alt="Calça 2" />
       <img src="media/calcas/calca3.png" alt="Calça 3" />
       <img src="media/calcas/calca4.png" alt="Calça 4" />
       <img src="media/calcas/calca5.png" alt="Calça 5" />
       <img src="media/calcas/calca6.png" alt="Calça 6" />
-      <img src="media/calcas/calca7.png" alt="Calça 7" class="short"/>
+      <img src="media/calcas/calca7.png" alt="Calça 7" />
       <!-- set 2 — duplicated -->
-      <img src="media/calcas/calca1.png" alt="Calça 1" />
-      <img src="media/calcas/calca2.png" alt="Calça 2" class="short"/>
-      <img src="media/calcas/calca3.png" alt="Calça 3" />
-      <img src="media/calcas/calca4.png" alt="Calça 4" />
-      <img src="media/calcas/calca5.png" alt="Calça 5" />
-      <img src="media/calcas/calca6.png" alt="Calça 6" />
-      <img src="media/calcas/calca7.png" alt="Calça 7" class="short"/>
+      <img src="media/calcas/calca1.png" alt="Calça 1" aria-hidden="true"/>
+      <img src="media/calcas/calca2.png" alt="Calça 2" aria-hidden="true" class="short" />
+      <img src="media/calcas/calca3.png" alt="Calça 3" aria-hidden="true"/>
+      <img src="media/calcas/calca4.png" alt="Calça 4" aria-hidden="true"/>
+      <img src="media/calcas/calca5.png" alt="Calça 5" aria-hidden="true"/>
+      <img src="media/calcas/calca6.png" alt="Calça 6" aria-hidden="true"/>
+      <img src="media/calcas/calca7.png" alt="Calça 7" aria-hidden="true" class="short"/>
     </div>
   </div>
 
