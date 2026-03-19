@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DRESScode.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #111;
+      --white: #fff;
+      --radius-btn: 30px;
+      --font-main: 'Encode Sans Expanded', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background: var(--white);
+      color: var(--black);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 40px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .btn {
+      font-family: var(--font-main);
+      font-size: clamp(14px, 1.5vw, 18px);
+      font-weight: 400;
+      border-radius: var(--radius-btn);
+      padding: 10px 28px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn:hover { opacity: 0.75; }
+
+    .btn-primary {
+      background: var(--black);
+      color: var(--white);
+      border: 1.5px solid var(--black);
+    }
+    .btn-outline {
+      background: var(--white);
+      color: var(--black);
+      border: 1.5px solid var(--black);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding-top: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding-bottom: 16px;
+    }
+
+    .hero .logo-wrap {
+      width: clamp(220px, 35vw, 420px);
+      margin-bottom: 0px;
+    }
+    .hero .logo-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .hero .tagline {
+      font-size: clamp(13px, 2vw, 22px);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      color: #333;
+      margin-top: 4px;
+    }
+
+    /* ── CLOTHES STRIP ── */
+    .clothes-strip {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      padding-top: 70px;
+    }
+
+    .strip-track {
+      display: flex;
+      gap: 0;
+      animation: scrollLeft 28s linear infinite;
+      width: max-content;
+    }
+
+    .strip-track:hover { animation-play-state: paused; }
+
+    .strip-track img {
+      height: clamp(140px, 22vw, 240px);
+      width: auto;
+      object-fit: contain;
+      flex-shrink: 0;
+      display: block;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .strip-track img:hover {
+      transform: scale(1.07) translateY(-6px);
+    }
+
+    @keyframes scrollLeft {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── PANTS STRIP ── */
+    .pants-strip { padding-top: 1rem; }
+
+    .pants-track {
+      display: flex;
+      gap: 0;
+      animation: scrollRight 32s linear infinite;
+      width: max-content;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .pants-track:hover { animation-play-state: paused; }
+
+    .pants-track img {
+      height: clamp(200px, 30vw, 340px);
+      width: auto;
+      object-fit: contain;
+      flex-shrink: 0;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .pants-track img.short {
+      height: 75px;
+    }
+
+    .pants-track img:hover {
+      transform: scale(1.06) translateY(-4px);
+    }
+
+    @keyframes scrollRight {
+      0%   { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+
+    /* ── GRADIENT FADE EDGES ── */
+    .clothes-strip::before,
+    .clothes-strip::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 80px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .clothes-strip::before {
+      left: 0;
+      background: linear-gradient(to right, #fff, transparent);
+    }
+    .clothes-strip::after {
+      right: 0;
+      background: linear-gradient(to left, #fff, transparent);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 60px;
+      padding: 40px;
+      border-top: 1px solid #eee;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    footer .brand {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    footer .links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    footer .links a {
+      font-size: 13px;
+      color: #555;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+    footer .links a:hover { color: var(--black); }
+
+    /* ── RESPONSIVE TWEAKS ── */
+    @media (max-width: 600px) {
+      nav { padding: 14px 20px; gap: 8px; }
+      .btn { padding: 8px 18px; font-size: 13px; }
+      .section-label { padding: 20px 20px 8px; }
+      footer { padding: 28px 20px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="btn btn-primary">Registrar</a>
+    <a href="#" class="btn btn-outline">Login</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="logo-wrap">
+      <img
+        src="/media/Logo.png"
+        alt="DRESScode. — Seu guarda-roupa virtual"
+      />
+    </div>
+    <p class="tagline">Seu guarda-roupa virtual</p>
+  </section>
+
+  <!-- BLUSAS -->
+  <div class="clothes-strip">
+    <div class="strip-track">
+      <!-- set 1 -->
+      <img src="/media/blusas/blusa1.png" alt="Blusa 1" />
+      <img src="/media/blusas/blusa2.png" alt="Blusa 2" />
+      <img src="/media/blusas/blusa3.png" alt="Blusa 3" />
+      <img src="/media/blusas/blusa4.png" alt="Blusa 4" />
+      <img src="/media/blusas/blusa5.png" alt="Blusa 5" />
+      <img src="/media/blusas/blusa6.png" alt="Blusa 6" />
+      <img src="/media/blusas/blusa7.png" alt="Blusa 7"/>
+      <!-- set 2 — duplicated for infinite scroll -->
+      <img src="/media/blusas/blusa1.png" alt="Blusa 1" />
+      <img src="/media/blusas/blusa2.png" alt="Blusa 2"/>
+      <img src="/media/blusas/blusa3.png" alt="Blusa 3" />
+      <img src="/media/blusas/blusa4.png" alt="Blusa 4" />
+      <img src="/media/blusas/blusa5.png" alt="Blusa 5" />
+      <img src="/media/blusas/blusa6.png" alt="Blusa 6" />
+      <img src="/media/blusas/blusa7.png" alt="Blusa 7"/>
+    </div>
+  </div>
+
+  <!-- CALÇAS -->
+  <div class="clothes-strip pants-strip">
+    <div class="pants-track">
+      <!-- set 1 -->
+      <img src="/media/calcas/calca1.png" alt="Calça 1" />
+      <img src="/media/calcas/calca2.png" alt="Calça 2" class="short" />
+      <img src="/media/calcas/calca3.png" alt="Calça 3" />
+      <img src="/media/calcas/calca4.png" alt="Calça 4" />
+      <img src="/media/calcas/calca5.png" alt="Calça 5" />
+      <img src="/media/calcas/calca6.png" alt="Calça 6" />
+      <img src="/media/calcas/calca7.png" alt="Calça 7" class="short"/>
+      <!-- set 2 — duplicated -->
+      <img src="/media/calcas/calca1.png" alt="Calça 1" />
+      <img src="/media/calcas/calca2.png" alt="Calça 2" class="short"/>
+      <img src="/media/calcas/calca3.png" alt="Calça 3" />
+      <img src="/media/calcas/calca4.png" alt="Calça 4" />
+      <img src="/media/calcas/calca5.png" alt="Calça 5" />
+      <img src="/media/calcas/calca6.png" alt="Calça 6" />
+      <img src="/media/calcas/calca7.png" alt="Calça 7" class="short"/>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="brand">DRESScode.</span>
+    <ul class="links">
+      <li><a href="#">Sobre</a></li>
+      <li><a href="#">Equipe</a></li>
+    </ul>
+  </footer>
+
+</body>
+</html>
