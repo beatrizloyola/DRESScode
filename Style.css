@@ -767,3 +767,172 @@ footer .integrantes p {
 .logout-link:hover {
   opacity: 0.7;
 }
+
+/* ── 12. GERENCIAMENTO DE PEÇAS (LINHAS E CATEGORIAS) ── */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.page-header h1 {
+  font-family: var(--font-serif);
+  font-size: 36px;
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+
+.page-header p {
+  color: #666;
+  font-size: 15px;
+}
+
+/* Títulos das Categorias */
+.category-section {
+  margin-bottom: 48px;
+  width: 100%;
+}
+
+.category-title {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: var(--black);
+  border-bottom: 1px solid var(--gray-border);
+  padding-bottom: 10px;
+}
+
+/* Transformando o container em uma linha com Scroll Horizontal */
+.pieces-row {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  
+  /* AJUSTE AQUI: Aumentar o padding superior e inferior para acomodar a sombra e o deslocamento */
+  padding: 24px 24px 24px 24px; /* Antes era padding-bottom: 16px */
+  
+  scroll-behavior: smooth;
+  
+  /* Customização básica da barra de rolagem (Firefox) */
+  scrollbar-width: thin; 
+  scrollbar-color: #ccc transparent;
+  
+  /* Garante que a sombra não seja cortada e que o container externo também não corte */
+  margin-bottom: 24px; /* Espaço extra antes da próxima categoria */
+}
+
+/* Customização da barra de rolagem (Chrome/Safari/Edge) */
+.pieces-row::-webkit-scrollbar {
+  height: 8px;
+}
+.pieces-row::-webkit-scrollbar-track {
+  background: transparent;
+}
+.pieces-row::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+/* Ajustando os cards menores para não encolherem na linha */
+.card-small {
+  flex: 0 0 auto; /* Impede que os cards sejam esmagados juntos */
+  width: 200px;   /* Largura fixa perfeita para a "prateleira" */
+}
+
+.card-small .card-image-box {
+  aspect-ratio: 1 / 1;
+  background-size: contain;
+  background-position: center;
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: #f9f9f9;
+}
+
+.card-small .card-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.card-small .card-tags {
+  gap: 6px;
+}
+
+.card-small .tag {
+  font-size: 11px;
+  padding: 4px 10px;
+}
+
+/* ── 13. BOTÕES DE AÇÃO DOS CARDS (EDITAR/EXCLUIR) ── */
+
+/* Certifique-se de que a caixa da imagem tem position relative */
+.card-image-box {
+  position: relative; 
+  /* ... o resto do seu código de card-image-box continua aqui ... */
+}
+
+/* Container dos botões flutuantes */
+.card-actions {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+  opacity: 0; /* Invisível por padrão */
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+/* Mostra os botões quando o usuário passa o mouse pelo card */
+.card:hover .card-actions {
+  opacity: 1;
+}
+
+/* Estilo individual de cada botão circular */
+.action-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, background-color 0.2s;
+}
+
+.action-btn:hover {
+  transform: scale(1.1);
+  background-color: #ffffff;
+}
+
+.action-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: #333;
+  transition: fill 0.2s;
+}
+
+/* Detalhe elegante: Lixeira fica vermelha ao passar o mouse */
+.delete-btn:hover svg {
+  fill: #d93025; 
+}
+
+/* Efeito Hover do Lápis: Fica com a cor da marca (Preto forte) */
+.edit-btn:hover svg {
+  fill: #000;
+}
+
+/* Mostrar botões de ação em dispositivos móveis por padrão (onde não tem hover) */
+@media (max-width: 768px) {
+  .card-actions {
+    opacity: 1;
+  }
+}
