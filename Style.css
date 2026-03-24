@@ -76,6 +76,14 @@ body {
   gap: 6px;
 }
 
+/* Ajuste para o Logo em Imagem na Navegação */
+.brand-logo img {
+  height: 48px; /* Ajuste este valor para deixar o logo maior ou menor */
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
 /* ── 3. NAVEGAÇÃO (HEADER) ── */
 nav {
   position: fixed;
