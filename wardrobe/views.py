@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from .models import Piece
 
 def landing_page(request):
     return render(request, 'Landing.html')
@@ -50,3 +52,26 @@ def login_page(request):
 
 def dashboard_page(request):
     return render(request, 'Dashboard.html')
+
+def logout_user(request):
+    logout(request)
+    return redirect('landing')
+
+@login_required(login_url='login') 
+def add_piece_page(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        category = request.POST.get('category')
+        image = request.FILES.get('image')
+        if image and category:
+            Piece.objects.create(
+                user=request.user,
+                image=image,
+                name=name,
+                category=category
+            )
+            return redirect('dashboard')
+        else:
+            return render(request, 'NewPiece.html', {'error': 'Por favor, insira a imagem e a categoria.'})
+
+    return render(request, 'NewPiece.html')

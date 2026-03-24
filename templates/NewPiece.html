@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,13 +7,13 @@
   <title>DRESScode. - Adicionar Peça</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="Style.css" />
+  <link rel="stylesheet" href="{% static 'css/Style.css' %}" />
 </head>
 <body>
 
   <nav>
-    <a href="Dashboard.html" class="brand-logo">
-      <img src="media/logo/Logo Horizontal.png">
+    <a href="{% url 'dashboard' %}" class="brand-logo">
+      <img src="{% static 'media/logo/Logo Horizontal.png' %}" alt="DRESScode Logo">
     </a>
     <div class="nav-landing">
         <a href="MyPieces.html" class="btn btn-outline">Gerenciar Peças
@@ -28,10 +29,15 @@
       <h2>Adicionar Peça</h2>
       <p>Faça o upload de uma nova peça para o seu guarda-roupa.</p>
 
-      <form action="Dashboard.html">
+      {% if error %}
+        <p style="color: red; text-align: center; margin-bottom: 15px; font-weight: bold;">{{ error }}</p>
+      {% endif %}
+
+      <form method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %}
         
         <div class="upload-dropzone" id="dropzone">
-          <input type="file" id="file-upload" accept="image/*" hidden>
+          <input type="file" id="file-upload" name="image" accept="image/*" required hidden>
           
           <label for="file-upload" class="dropzone-label" id="dropzone-label">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -45,12 +51,12 @@
 
         <div class="input-group">
           <label for="piece-name">Nome (Opcional)</label>
-          <input type="text" id="piece-name" placeholder="Ex: Camiseta Básica Preta">
+          <input type="text" id="piece-name" name="name" placeholder="Ex: Camiseta Básica Preta">
         </div>
 
         <div class="input-group">
           <label for="piece-category">Categoria</label>
-          <select id="piece-category" required>
+          <select id="piece-category" name="category" required>
             <option value="" disabled selected>Selecione uma categoria...</option>
             <option value="shirt">Parte de cima (Blusas, Camisas, Casacos)</option>
             <option value="pants">Parte de baixo (Calças, Saias, Shorts)</option>
