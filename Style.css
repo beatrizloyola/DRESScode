@@ -607,3 +607,89 @@ footer .integrantes p {
     padding: 20px;
   }
 }
+
+/* ── 10. UPLOAD DE PEÇAS ── */
+.upload-box {
+  max-width: 440px; /* Um pouco mais largo para acomodar bem a foto */
+}
+
+/* Caixa pontilhada para arrastar a foto */
+.upload-dropzone {
+  width: 100%;
+  aspect-ratio: 4/4.5;
+  max-height: 280px;
+  border: 2px dashed var(--gray-border);
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+  background-color: var(--gray-light);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.upload-dropzone:hover {
+  border-color: var(--black);
+  background-color: #f0f0f0;
+}
+
+.dropzone-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #666;
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.dropzone-label svg {
+  width: 40px;
+  height: 40px;
+  fill: #aaa;
+  transition: fill 0.2s ease;
+}
+
+.upload-dropzone:hover .dropzone-label svg {
+  fill: var(--black);
+}
+
+/* Div que recebe o background da imagem no JS */
+.image-preview {
+  position: absolute;
+  top: 0; left: 0; 
+  width: 100%; height: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--white);
+  display: none;
+  z-index: 2;
+  pointer-events: none; /* Permite clicar através do preview para trocar a foto */
+}
+
+/* Estilo do Dropdown (Select) */
+.input-group select {
+  width: 100%;
+  padding: 12px 20px;
+  border: 1.5px solid var(--gray-border);
+  border-radius: var(--radius-btn);
+  font-family: var(--font-main);
+  font-size: clamp(14px, 1.5vw, 15px);
+  color: var(--black);
+  outline: none;
+  background-color: var(--white);
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+
+.input-group select:focus {
+  border-color: var(--black);
+}
