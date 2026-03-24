@@ -1,49 +1,315 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>DRESScode</title>
-        <link href="Editor.css" rel="stylesheet">
-    </head>
-    <body>
-        <div class="main">
-            <div class="lookPreview" id="lookPreview">
-                <div class="shirt editor">
-                    <div class="arrowBack" id="shirtBack"></div>
-                    <div class="preview" id="shirtPreview"></div>
-                    <div class="arrowFoward" id="shirtFoward"></div>
-                </div>
-                <div class="pants editor">
-                    <div class="arrowBack" id="pantsBack"></div>
-                    <div class="preview" id="pantsPreview"></div>
-                    <div class="arrowFoward" id="pantsFoward"></div>
-                </div>
-                <div class="shoes editor">
-                    <div class="arrowBack" id="shoesBack"></div>
-                    <div class="preview" id="shoesPreview"></div>
-                    <div class="arrowFoward" id="shoesFoward"></div>
-                </div>
-            </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DRESScode. - Criar Look</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="Style.css" />
+</head>
+<body>
 
-            <div class="lookInfo">
-                <div class="nameArea">
-                    Nome:<br>
-                    <input type="text" id="nameInput" maxlength="26">
-                    <div id="noNameMsg"></div>
-                </div>
-                <div class="tagArea">
-                    Tags:
-                    <div class="tagList" id="tagList">
-                        <div class="tag" id="addTag">+</div>
-                    </div>
-                </div>
-                <div class="completeArea">
-                    <button type="button" class="back button" id="back">Voltar</button>
-                    <button type="button" class="save button" id="save">Salvar</button>
-                </div>
-            </div>
+  <nav>
+    <a href="Dashboard.html" class="brand-logo">
+      <span class="sans">DRESScode.</span>
+    </a>
+    <a href="Dashboard.html" class="btn btn-outline">Cancelar e Voltar ao Dashboard</a>
+  </nav>
+
+  <main class="editor-content">
+    
+    <div class="lookPreview" id="lookPreview">
+      <div class="shirt editor-row">
+        <div class="arrowBack" id="shirtBack"></div>
+        <div class="preview" id="shirtPreview"></div>
+        <div class="arrowFoward" id="shirtFoward"></div>
+      </div>
+      <div class="pants editor-row">
+        <div class="arrowBack" id="pantsBack"></div>
+        <div class="preview" id="pantsPreview"></div>
+        <div class="arrowFoward" id="pantsFoward"></div>
+      </div>
+      <div class="shoes editor-row">
+        <div class="arrowBack" id="shoesBack"></div>
+        <div class="preview" id="shoesPreview"></div>
+        <div class="arrowFoward" id="shoesFoward"></div>
+      </div>
+    </div>
+
+    <div class="lookInfo">
+      <div class="input-group">
+        <label for="nameInput">Nome do Outfit</label>
+        <input type="text" id="nameInput" maxlength="26" placeholder="Ex: Look de Verão">
+        <div id="noNameMsg" class="error-msg"></div>
+      </div>
+
+      <div class="tagArea input-group">
+        <label>Tags</label>
+        <div class="tagList" id="tagList">
+          <div class="tag add-tag-btn" id="addTag">+ Adicionar</div>
         </div>
-        <script src="Editor.js"></script>
-    </body>
+      </div>
+
+      <div class="completeArea">
+        <button type="button" class="btn btn-outline" id="back">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="save">Salvar Look</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <span class="brand">DRESScode.</span>
+    <ul class="integrantes">
+      <li><p>Ana Beatriz • Beatriz Loyola • Júlia Tenório • Gustavo Rezende • Matheus Lima • Rafael Carrilho • Pedro Bedor</p></li>
+    </ul>
+  </footer>
+
+  <script>
+    const shirtList = [
+        {
+            name: 'blusa1',
+            category: 'shirt',
+            image: 'media/blusas/blusa1.png',
+            alt: 'Blusa 1'
+        },
+        {
+            name: 'blusa2',
+            category: 'shirt',
+            image: 'media/blusas/blusa2.png',
+            alt: 'Blusa 2'
+        },
+        {
+            name: 'blusa3',
+            category: 'shirt',
+            image: 'media/blusas/blusa3.png',
+            alt: 'Blusa 3'
+        }
+    ];
+
+    const pantsList = [
+        {
+            name: 'calca1',
+            category: 'pants',
+            image: 'media/calcas/calca1.png',
+            alt: 'Calça 1'
+        },
+        {
+            name: 'calca2',
+            category: 'pants',
+            image: 'media/calcas/calca2.png',
+            alt: 'Calça 2'
+        },
+        {
+            name: 'calca3',
+            category: 'pants',
+            image: 'media/calcas/calca3.png',
+            alt: 'Calça 3'
+        }
+    ];
+
+    const shoesList = [
+        {
+            name: 'sapato1',
+            category: 'shoes',
+            image: 'media/Logo.png',
+            alt: 'Sapato 1'
+        }
+    ];
+
+    let shirtLvl = 0;
+    let pantsLvl = 0;
+    let shoesLvl = 0;
+
+    const tags = [];
+
+    let buttonClicked = null;
+
+    let animationHappening = false;
+    let noNameError = false;
+
+
+    const lookPreview = document.getElementById('lookPreview');
+
+    const shirtFoward = document.getElementById('shirtFoward');
+    const shirtBack = document.getElementById('shirtBack');
+    const shirtPreview = document.getElementById('shirtPreview');
+
+    const pantsFoward = document.getElementById('pantsFoward');
+    const pantsBack = document.getElementById('pantsBack');
+    const pantsPreview = document.getElementById('pantsPreview');
+
+    const shoesFoward = document.getElementById('shoesFoward');
+    const shoesBack = document.getElementById('shoesBack');
+    const shoesPreview = document.getElementById('shoesPreview');
+
+
+    const nameInput = document.getElementById('nameInput');
+    const noNameMsg = document.getElementById('noNameMsg');
+
+    const addTagBtn = document.getElementById('addTag');
+
+    const saveBtn = document.getElementById('save');
+
+    /* ---------------------- */
+
+    lookPreview.addEventListener('mousedown', (e) => e.preventDefault());
+
+    shirtFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'shirt'));
+    shirtBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'shirt'));
+
+    pantsFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'pants'));
+    pantsBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'pants'));
+
+    shoesFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'shoes'));
+    shoesBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'shoes'));
+
+
+    nameInput.addEventListener('input', inputName);
+
+    addTagBtn.addEventListener('click', addTag);
+
+    saveBtn.addEventListener('click', saveLook);
+
+    /* --- Inicialização --- */
+
+    const shirtHeight = getComputedStyle(shirtPreview).height;
+    const pantsHeight = getComputedStyle(pantsPreview).height;
+    const shoesHeight = getComputedStyle(shoesPreview).height;
+
+    changeLevel('shirt', shirtList, shirtLvl, shirtPreview, shirtHeight , 0);
+    changeLevel('pants', pantsList, pantsLvl, pantsPreview, pantsHeight , 0);
+    changeLevel('shoes', shoesList, shoesLvl, shoesPreview, shoesHeight , 0);
+
+    nameInput.value = '';
+
+    /* --------------------- */
+
+
+    /* --- Parte do editor --- */
+
+    function pressedArrow(e, modifier, category) {
+        buttonClicked = e.currentTarget;
+        e.currentTarget.style.transform = 'scale(0.5)';
+
+        if (!animationHappening) {
+            switch (category) {
+                case 'shirt': changeLevel(category, shirtList, shirtLvl, shirtPreview, shirtHeight, modifier); break;
+                case 'pants': changeLevel(category, pantsList, pantsLvl, pantsPreview, pantsHeight, modifier); break;
+                case 'shoes': changeLevel(category, shoesList, shoesLvl, shoesPreview, shoesHeight, modifier); break;
+            }
+        }
+
+        document.addEventListener('mouseup', releaseArrow);
+    }
+
+    function releaseArrow() {
+        buttonClicked.style.transform = 'scale(1)';
+        buttonClicked = null;
+        document.removeEventListener('mouseup', releaseArrow);
+    }
+
+    function changeLevel (category, list, lvl, preview, height, modifier) {
+        if (list.length === 0) return;
+
+        lvl += modifier;
+        if (lvl < 0) lvl = list.length - 1;
+        if (lvl >= list.length) lvl = 0;
+
+        switch (category) {
+            case 'shirt': shirtLvl = lvl; break;
+            case 'pants': pantsLvl = lvl; break;
+            case 'shoes': shoesLvl = lvl; break;
+        }
+
+        const currentImg = preview.querySelector('img');
+
+        if (currentImg) {
+            changeImage(currentImg, modifier, list, lvl, preview, height);
+        }
+        else {
+            preview.innerHTML = '';
+            addPiece(list, lvl, preview, height);
+        }
+    }
+
+    function changeImage(image, modifier, list, lvl, preview, height) {
+        switch (modifier) {
+            case 1: image.classList.add('animateOutToLeft'); break;
+            case -1: image.classList.add('animateOutToRight'); break;
+        }
+        animationHappening = true;
+
+        image.addEventListener('animationend', (e) => {
+            e.currentTarget.classList.remove('animateOutToLeft', 'animateOutToRight');
+            e.currentTarget.remove();
+
+            const newPiece = addPiece(list, lvl, preview, height);
+            addInAnimation(newPiece, modifier);
+            
+            animationHappening = false;
+        }, {once: true});
+    }
+
+    function addPiece(list, lvl, preview, height) {
+        const newPiece = document.createElement('img');
+        newPiece.src = list[lvl].image;
+        newPiece.alt = list[lvl].alt;
+        newPiece.style.height = height;
+        preview.appendChild(newPiece);
+        
+        return newPiece;
+    }
+
+    function addInAnimation(image, modifier) {
+        switch (modifier) {
+            case 1: image.classList.add('animateInToLeft'); break;
+            case -1: image.classList.add('animateInToRight'); break;
+        }
+        animationHappening = true;
+
+        image.addEventListener('animationend', (e) => {
+            e.currentTarget.classList.remove('animateInToLeft', 'animateInToRight');
+            animationHappening = false;
+        }, {once: true});
+    }
+
+    /* ----------------------- */
+
+
+    /* --- Parte das informações --- */
+
+    function inputName() {
+        if (noNameError) {
+            noNameMsg.textContent = '';
+            noNameError = false;
+        }
+    }
+
+    function addTag() {
+
+    }
+
+    function saveLook() {
+        if (nameInput.value.trim() === '' && !noNameError) {
+            noNameMsg.textContent = 'Adicione um nome para o seu look.';
+            noNameError = true;
+            return;
+        }
+
+        const newLook = {
+            name: nameInput.value.trim(),
+            shirt: shirtList[shirtLvl],
+            pants: pantsList[pantsLvl],
+            shoes: shoesList[shoesLvl],
+            tags: tags
+        }
+    }
+
+    /* ----------------------------- */
+
+
+  </script>
+</body>
 </html>

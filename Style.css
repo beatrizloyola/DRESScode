@@ -1,0 +1,609 @@
+/* ==========================================================================
+   DRESScode. - Estilos Unificados (Landing Page & Dashboard)
+   ========================================================================== */
+
+/* ── 1. RESET E VARIÁVEIS GLOBAIS ── */
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+:root {
+  /* Cores */
+  --black: #111;
+  --white: #fff;
+  --gray-light: #f4f4f4;
+  --gray-border: #e0e0e0;
+  
+  /* Medidas */
+  --radius-btn: 30px;
+  
+  /* Tipografia */
+  --font-main: 'Encode Sans Expanded', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+}
+
+body {
+  font-family: var(--font-main);
+  background: var(--white);
+  color: var(--black);
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 2. COMPONENTES COMPARTILHADOS ── */
+
+/* Botões */
+.btn {
+  font-family: var(--font-main);
+  font-size: clamp(14px, 1.5vw, 16px);
+  font-weight: 400;
+  border-radius: var(--radius-btn);
+  padding: 10px 28px;
+  cursor: pointer;
+  transition: opacity 0.2s, background-color 0.2s, color 0.2s;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn:hover { 
+  opacity: 0.75; 
+}
+
+.btn-primary {
+  background: var(--black);
+  color: var(--white);
+  border: 1.5px solid var(--black);
+}
+
+.btn-outline {
+  background: var(--white);
+  color: var(--black);
+  border: 1.5px solid var(--black);
+}
+
+/* Identidade Visual (Logo em texto) */
+.brand-logo {
+  font-size: 24px;
+  text-decoration: none;
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── 3. NAVEGAÇÃO (HEADER) ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between; /* Padrão para o Dashboard */
+  align-items: center;
+  gap: 12px;
+  padding: 18px 40px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Modificador para a Landing Page (alinha botões à direita) */
+nav.nav-landing {
+  justify-content: flex-end;
+}
+
+/* Barra de Pesquisa (Dashboard) */
+.search-container {
+  position: relative;
+  flex-grow: 1;
+  max-width: 500px;
+  margin: 0 20px;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 10px 40px 10px 20px;
+  border: 1.5px solid var(--gray-border);
+  border-radius: var(--radius-btn);
+  font-family: var(--font-main);
+  font-size: clamp(14px, 1.5vw, 16px);
+  color: var(--black);
+  outline: none;
+  background-color: var(--white);
+  transition: border-color 0.2s;
+}
+
+.search-container input:focus {
+  border-color: var(--black);
+}
+
+.search-container svg {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  fill: #888;
+  cursor: pointer;
+}
+
+/* ── 4. ÁREA PRINCIPAL DO DASHBOARD ── */
+main.dashboard-content {
+  padding: 120px 40px 60px; /* Compensa o menu fixo */
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-grow: 1; /* Empurra o footer para o final da página */
+  width: 100%;
+}
+
+.outfit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+}
+
+/* Cards do Dashboard */
+.card {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.03) translateY(-6px);
+}
+
+.card-image-box {
+  background-color: var(--gray-light);
+  border-radius: 16px;
+  aspect-ratio: 4/5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(0,0,0,0.03);
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover .card-image-box {
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 12px;
+  letter-spacing: 0.02em;
+}
+
+.card-tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  border: 1px solid var(--black);
+  padding: 6px 18px;
+  border-radius: var(--radius-btn);
+  font-size: 13px;
+  color: var(--black);
+  background-color: transparent;
+  letter-spacing: 0.03em;
+}
+
+/* ── 5. ÁREA DA LANDING PAGE ── */
+.hero {
+  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 16px;
+}
+
+.hero .logo-wrap {
+  width: clamp(200px, 20vw, 3000px);
+  margin-bottom: 0px;
+}
+
+.hero .logo-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.hero .tagline {
+  font-size: clamp(13px, 2vw, 22px);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: #333;
+  margin-top: 4px;
+}
+
+/* Carrossel de Roupas */
+.clothes-strip {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding-top: 70px;
+}
+
+.strip-track {
+  display: flex;
+  gap: 0;
+  animation: scrollLeft 30s linear infinite;
+  width: max-content;
+}
+
+.strip-track:hover { animation-play-state: paused; }
+
+.strip-track img {
+  height: clamp(140px, 22vw, 240px);
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.strip-track img:hover {
+  transform: scale(1.07) translateY(-6px);
+}
+
+@keyframes scrollLeft {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.pants-strip { padding-top: 10px; }
+
+.pants-track {
+  display: flex;
+  width: max-content;
+  animation: scrollRight 30s linear infinite;
+  transform: translateX(-50%);
+}
+
+.pants-track:hover { animation-play-state: paused; }
+
+@keyframes scrollRight {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
+}
+
+.pants-track img {
+  height: clamp(200px, 30vw, 340px);
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.pants-track img:hover {
+  transform: scale(1.06) translateY(-4px);
+}
+
+/* Efeito de gradiente nas bordas do carrossel */
+.clothes-strip::before,
+.clothes-strip::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.clothes-strip::before {
+  left: 0;
+  background: linear-gradient(to right, #fff, transparent);
+}
+
+.clothes-strip::after {
+  right: 0;
+  background: linear-gradient(to left, #fff, transparent);
+}
+
+/* ── 6. RODAPÉ (FOOTER) ── */
+footer {
+  margin-top: auto; /* Empurra para baixo se a página for curta */
+  padding: 40px;
+  border-top: 1px solid var(--gray-border);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+footer .brand {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+footer .integrantes {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+footer .integrantes p {
+  font-size: 11px;
+  color: #555;
+  letter-spacing: 0.05em;
+}
+
+/* ── 7. RESPONSIVIDADE ── */
+@media (max-width: 768px) {
+  /* Navegação */
+  nav, nav.nav-landing {
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px 20px;
+  }
+  
+  .search-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    order: 3;
+  }
+  
+  /* Estrutura */
+  main.dashboard-content {
+    padding: 180px 20px 40px;
+  }
+  
+  /* Rodapé */
+  footer { 
+    padding: 28px 20px; 
+    flex-direction: column; 
+    align-items: flex-start; 
+  }
+}
+
+@media (max-width: 600px) {
+  .btn { 
+    padding: 8px 18px; 
+    font-size: 13px; 
+  }
+}
+
+/* ── 8. PÁGINAS DE AUTENTICAÇÃO (LOGIN / REGISTRO) ── */
+.auth-content {
+  padding: 120px 20px 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1; /* Centraliza verticalmente junto com o body flex */
+}
+
+.auth-box {
+  width: 100%;
+  max-width: 380px; /* Mantém o formulário num tamanho elegante */
+  text-align: center;
+}
+
+.auth-box h2 {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+}
+
+.auth-box p {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+
+/* Campos de Formulário */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--black);
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 20px;
+  border: 1.5px solid var(--gray-border);
+  border-radius: var(--radius-btn);
+  font-family: var(--font-main);
+  font-size: clamp(14px, 1.5vw, 15px);
+  color: var(--black);
+  outline: none;
+  background-color: var(--white);
+  transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+  border-color: var(--black);
+}
+
+/* Link de Esqueceu a senha */
+.forgot-password {
+  display: block;
+  text-align: right;
+  font-size: 13px;
+  color: #666;
+  text-decoration: none;
+  margin-bottom: 24px;
+  transition: color 0.2s;
+}
+
+.forgot-password:hover {
+  color: var(--black);
+}
+
+/* Utilitário para o botão ocupar a largura toda do formulário */
+.btn-full {
+  width: 100%;
+  padding: 14px 28px; /* Um pouco mais gordinho pra ficar elegante */
+}
+
+/* ── 9. EDITOR DE LOOKS ── */
+.editor-content {
+  padding: 120px 40px 60px; /* Compensa o menu fixo */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 80px;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Área de Visualização (Manequim) */
+.lookPreview {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  background-color: var(--gray-light);
+  padding: 40px;
+  border-radius: 20px;
+  border: 1px solid rgba(0,0,0,0.03);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+}
+
+.editor-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.preview {
+  width: 300px;
+  overflow: hidden;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#shirtPreview { height: 200px; }
+#pantsPreview { height: 300px; }
+#shoesPreview { height: 100px; }
+
+/* Setas de Navegação */
+.arrowFoward, .arrowBack {
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.5;
+}
+
+.arrowFoward:hover, .arrowBack:hover {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.arrowFoward {
+  width: 0; height: 0;
+  border-top: 10px solid transparent; border-bottom: 10px solid transparent;
+  border-left: 15px solid var(--black);
+}
+
+.arrowBack {
+  width: 0; height: 0;
+  border-top: 10px solid transparent; border-bottom: 10px solid transparent;
+  border-right: 15px solid var(--black);
+}
+
+/* Informações do Look (Formulário Lateral) */
+.lookInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.error-msg {
+  color: #d93025;
+  font-size: 13px;
+  margin-top: 6px;
+  min-height: 16px;
+}
+
+.add-tag-btn {
+  border-style: dashed;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.add-tag-btn:hover {
+  background-color: var(--gray-border);
+}
+
+.completeArea {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.completeArea .btn {
+  flex: 1; /* Faz os botões dividirem o espaço igualmente */
+}
+
+/* Animações (Importadas do ficheiro original) */
+.animateOutToRight { animation: slideOutToRight 0.1s ease-in; }
+@keyframes slideOutToRight {
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to { opacity: 0; transform: translateX(150px) scale(0.8); }
+}
+
+.animateInToRight { animation: slideInToRight 0.1s ease-out; }
+@keyframes slideInToRight {
+  from { opacity: 0; transform: translateX(-150px) scale(0.8); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+.animateOutToLeft { animation: slideOutToLeft 0.1s ease-in; }
+@keyframes slideOutToLeft {
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to { opacity: 0; transform: translateX(-150px) scale(0.8); }
+}
+
+.animateInToLeft { animation: slideInToLeft 0.1s ease-out; }
+@keyframes slideInToLeft {
+  from { opacity: 0; transform: translateX(150px) scale(0.8); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+/* Responsividade do Editor */
+@media (max-width: 900px) {
+  .editor-content {
+    gap: 40px;
+    padding: 120px 20px 40px;
+  }
+  .lookPreview {
+    padding: 20px;
+  }
+}
