@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,15 +8,15 @@
   
   <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
   
-  <link rel="stylesheet" href="Style.css" />
+  <link rel="stylesheet" href="{% static 'css/Style.css' %}" />
 </head>
 <body>
 
   <nav>
-    <a href="Landing.html" class="brand-logo">
-      <img src="media/logo/Logo Horizontal.png">
+    <a href="{% url 'landing' %}" class="brand-logo">
+      <img src="{% static 'media/logo/Logo Horizontal.png' %}" alt="Logo DRESScode">
     </a>
-    <a href="SignUp.html" class="btn btn-outline">Registrar</a>
+    <a href="{% url 'signup' %}" class="btn btn-outline">Registrar</a>
   </nav>
 
   <main class="auth-content">
@@ -23,15 +24,22 @@
       <h2>Bem-vindo de volta!</h2>
       <p>Acesse o seu guarda-roupa virtual.</p>
 
-      <form action="Dashboard.html">
+      {% if error %}
+        <p style="color: red; text-align: center; margin-bottom: 15px; font-weight: bold;">{{ error }}</p>
+      {% endif %}
+
+
+      <form method="POST" action="">
+        {% csrf_token %}
+        
         <div class="input-group">
           <label for="email">E-mail</label>
-          <input type="email" id="email" placeholder="seu@email.com" required>
+          <input type="email" id="email" name="email" placeholder="seu@email.com" required>
         </div>
 
         <div class="input-group">
           <label for="password">Senha</label>
-          <input type="password" id="password" placeholder="••••••••" required>
+          <input type="password" id="password" name="password" placeholder="••••••••" required>
         </div>
 
         <a href="#" class="forgot-password">Esqueceu a senha?</a>
