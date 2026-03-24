@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -86,3 +86,28 @@ def my_pieces_page(request):
     }
     
     return render(request, 'MyPieces.html', context)
+
+@login_required(login_url='login')
+def edit_piece(request, piece_id):
+    piece = get_object_or_404(Piece, id=piece_id, user=request.user)
+    
+    if request.method == 'POST':
+        piece.name = request.POST.get('name')
+        piece.category = request.POST.get('category')
+        
+        if 'image' in request.FILES:
+            piece.image = request.FILES.get('image')
+            
+        piece.save()
+        return redirect('my_pieces')
+        
+    return render(request, 'EditPiece.html', {'piece': piece})
+
+@login_required(login_url='login')
+def delete_piece(request, piece_id):
+    piece = get_object_or_404(Piece, id=piece_id, user=request.user)
+    
+    if request.method == 'POST':
+        piece.delete()
+        
+    return redirect('my_pieces')
