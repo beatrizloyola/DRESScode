@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DRESScode. - Estilos Unificados (Landing Page & Dashboard)
+                                   DRESScode.
    ========================================================================== */
 
 /* ── 1. RESET E VARIÁVEIS GLOBAIS ── */
@@ -700,4 +700,70 @@ footer .integrantes p {
 
 .input-group select:focus {
   border-color: var(--black);
+}
+
+/* ── 11. MINHA CONTA (CONFIGURAÇÕES) ── */
+.account-content {
+  padding: 120px 20px 60px;
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.settings-container {
+  width: 100%;
+  max-width: 540px; /* Um pouco mais largo que o login para conforto visual */
+  background-color: var(--white);
+}
+
+.settings-header h2 {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.settings-header p {
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background-color: var(--gray-border);
+  margin: 32px 0;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--black);
+}
+
+.mt-4 {
+  margin-top: 40px; /* Classe utilitária para dar um espaço extra */
+}
+
+/* Ações Finais (Salvar e Sair) */
+.account-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.logout-link {
+  color: #d93025; /* Um tom de vermelho elegante para indicar saída/perigo */
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.logout-link:hover {
+  opacity: 0.7;
 }
