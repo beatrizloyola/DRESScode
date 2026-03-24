@@ -70,8 +70,19 @@ def add_piece_page(request):
                 name=name,
                 category=category
             )
-            return redirect('dashboard')
+            return redirect('my_pieces')
         else:
             return render(request, 'NewPiece.html', {'error': 'Por favor, insira a imagem e a categoria.'})
 
     return render(request, 'NewPiece.html')
+
+@login_required(login_url='login')
+def my_pieces_page(request):
+    user_pieces = Piece.objects.filter(user=request.user)
+    context = {
+        'shirts': user_pieces.filter(category='shirt'),
+        'pants': user_pieces.filter(category='pants'),
+        'shoes': user_pieces.filter(category='shoes'),
+    }
+    
+    return render(request, 'MyPieces.html', context)
