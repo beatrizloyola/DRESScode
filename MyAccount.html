@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DRESScode. - Minha Conta</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="Style.css" />
+</head>
+<body>
+
+  <nav>
+    <a href="Dashboard.html" class="brand-logo">
+      <img src="media/logo/Logo Horizontal.png" alt="DRESScode Logo">
+    </a>
+    <a href="Dashboard.html" class="btn btn-outline">Voltar</a>
+  </nav>
+
+  <main class="account-content">
+    <div class="settings-container">
+      
+      <div class="settings-header">
+        <h2>Minha Conta</h2>
+        <p>Gerencie suas informações pessoais e credenciais de acesso.</p>
+      </div>
+
+      <hr class="divider">
+
+      <form action="Dashboard.html">
+        
+        <h3 class="section-title">Dados Pessoais</h3>
+        <div class="input-group">
+          <label for="name">Nome Completo</label>
+          <input type="text" id="name" value="#" required>
+        </div>
+
+        <div class="input-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" value="#" required>
+        </div>
+
+        <h3 class="section-title mt-4">Segurança</h3>
+        <div class="input-group">
+          <label for="new-password">Nova Senha</label>
+          <input type="password" id="new-password" placeholder="Deixe em branco para não alterar">
+        </div>
+
+        <div class="account-actions">
+            <a href="Login.html" class="logout-link">Sair da conta</a>
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <span class="brand">DRESScode.</span>
+    <ul class="integrantes">
+      <li><p>Ana Beatriz • Beatriz Loyola • Júlia Tenório • Gustavo Rezende • Matheus Lima • Rafael Carrilho • Pedro Bedor</p></li>
+    </ul>
+  </footer>
+
+</body>
+</html>
