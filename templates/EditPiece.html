@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,18 +7,18 @@
   <title>DRESScode. - Editar Peça</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="Style.css" />
+  <link rel="stylesheet" href="{% static 'css/Style.css' %}" />
 </head>
 <body>
 
   <nav>
-    <a href="Dashboard.html" class="brand-logo">
-      <img src="media/logo/Logo Horizontal.png" alt="DRESScode Logo">
+    <a href="{% url 'dashboard' %}" class="brand-logo">
+      <img src="{% static 'media/logo/Logo Horizontal.png' %}" alt="DRESScode Logo">
     </a>
     <div class="nav-landing">
-        <a href="MyPieces.html" class="btn btn-outline">Gerenciar Peças</a>
-        <a href="Dashboard.html" class="btn btn-outline">Gerenciar Outfits</a>
-        <a href="MyAccount.html" class="btn btn-primary">Minha Conta</a>
+        <a href="{% url 'my_pieces' %}" class="btn btn-outline">Gerenciar Peças</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline">Gerenciar Outfits</a>
+        <a href="#" class="btn btn-primary">Minha Conta</a>
     </div>
   </nav>
 
@@ -26,23 +27,24 @@
       <h2>Editar Peça</h2>
       <p>Atualize as informações desta peça do seu guarda-roupa.</p>
 
-      <form action="MyPieces.html">
+      <form action="{% url 'edit_piece' piece.id %}" method="POST">
+        {% csrf_token %}
         
         <div class="card" style="margin: 0 auto 24px; width: 200px; cursor: default;">
-          <div class="card-image-box" style="background-image: url('media/blusas/blusa1.png'); background-size: contain; background-color: #f9f9f9; aspect-ratio: 1/1; margin-bottom: 0;"></div>
+          <div class="card-image-box" style="background-image: url('{{ piece.image.url }}'); background-size: contain; background-color: #f9f9f9; aspect-ratio: 1/1; margin-bottom: 0;"></div>
         </div>
 
         <div class="input-group">
           <label for="piece-name">Nome</label>
-          <input type="text" id="piece-name" value="Top Marrom Poá" required>
+          <input type="text" id="piece-name" name="name" value="{{ piece.name }}" required>
         </div>
 
         <div class="input-group">
           <label for="piece-category">Categoria</label>
-          <select id="piece-category" required>
-            <option value="shirt" selected>Parte de cima (Blusas, Camisas, Casacos)</option>
-            <option value="pants">Parte de baixo (Calças, Saias, Shorts)</option>
-            <option value="shoes">Sapatos e Calçados</option>
+          <select id="piece-category" name="category" required>
+            <option value="shirt" {% if piece.category == 'shirt' %}selected{% endif %}>Parte de cima (Blusas, Camisas, Casacos)</option>
+            <option value="pants" {% if piece.category == 'pants' %}selected{% endif %}>Parte de baixo (Calças, Saias, Shorts)</option>
+            <option value="shoes" {% if piece.category == 'shoes' %}selected{% endif %}>Sapatos e Calçados</option>
           </select>
         </div>
 
