@@ -14,4 +14,5 @@ urlpatterns = [
     path('outfits/add/', views.add_outfit_page, name='add_outfit'),
     path('excluir-outfit/<int:outfit_id>/', views.delete_outfit, name='delete_outfit'),
     path('outfits/edit/<int:outfit_id>/', views.edit_outfit_page, name='edit_outfit'),
+    path('conta/', views.my_account, name='my_account'),
 ]
