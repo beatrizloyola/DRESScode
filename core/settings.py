@@ -1,3 +1,5 @@
+1/0
+
 from pathlib import Path
 import os
 import environ
