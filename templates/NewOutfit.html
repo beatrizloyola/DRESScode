@@ -1,0 +1,309 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DRESScode. - Criar Look</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/Style.css' %}" />
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+  <nav>
+    <a href="{% url 'dashboard' %}" class="brand-logo">
+      <img src="{% static 'media/logo/Logo Horizontal.png' %}" alt="DRESScode Logo">
+    </a>
+    <div class="nav-landing">
+        <a href="{% url 'my_pieces' %}" class="btn btn-outline">Gerenciar Peças</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline">Gerenciar Outfits</a>
+        <a href{% url 'my_account' %}" class="btn btn-primary">Minha Conta</a>
+    </div>
+  </nav>
+
+  <main class="editor-content">
+    
+    <div class="lookPreview" id="lookPreview" style="background-color: white;">
+      <div class="shirt editor-row">
+        <div class="arrowBack" id="shirtBack"></div>
+        <div class="preview" id="shirtPreview"></div>
+        <div class="arrowFoward" id="shirtFoward"></div>
+      </div>
+      <div class="pants editor-row">
+        <div class="arrowBack" id="pantsBack"></div>
+        <div class="preview" id="pantsPreview"></div>
+        <div class="arrowFoward" id="pantsFoward"></div>
+      </div>
+      <div class="shoes editor-row">
+        <div class="arrowBack" id="shoesBack"></div>
+        <div class="preview" id="shoesPreview"></div>
+        <div class="arrowFoward" id="shoesFoward"></div>
+      </div>
+    </div>
+
+    <div class="lookInfo">
+      <div class="input-group">
+        <label for="nameInput">Nome do Outfit</label>
+        <input type="text" id="nameInput" maxlength="26" placeholder="Ex: Look de Verão">
+        <div id="noNameMsg" class="error-msg"></div>
+      </div>
+
+      <div class="tagArea input-group">
+        <label>Tags</label>
+        <div class="tagList" id="tagList">
+          <div class="tag add-tag-btn" id="addTag">+ Adicionar</div>
+        </div>
+      </div>
+
+      <div class="completeArea">
+        <a href="{% url 'dashboard' %}" class="btn btn-outline" id="back" style="text-decoration:none; text-align:center;">Cancelar</a>
+        {% csrf_token %}
+        <button type="button" class="btn btn-primary" id="save">Salvar Look</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Injetando as roupas que vieram do banco de dados (views.py)
+    const shirtList = {{ shirts_json|safe }};
+    const pantsList = {{ pants_json|safe }};
+    const shoesList = {{ shoes_json|safe }};
+
+    let shirtLvl = 0;
+    let pantsLvl = 0;
+    let shoesLvl = 0;
+
+    const tags = [];
+    let buttonClicked = null;
+    let animationHappening = false;
+    let noNameError = false;
+
+    const lookPreview = document.getElementById('lookPreview');
+    const shirtFoward = document.getElementById('shirtFoward');
+    const shirtBack = document.getElementById('shirtBack');
+    const shirtPreview = document.getElementById('shirtPreview');
+    const pantsFoward = document.getElementById('pantsFoward');
+    const pantsBack = document.getElementById('pantsBack');
+    const pantsPreview = document.getElementById('pantsPreview');
+    const shoesFoward = document.getElementById('shoesFoward');
+    const shoesBack = document.getElementById('shoesBack');
+    const shoesPreview = document.getElementById('shoesPreview');
+    const nameInput = document.getElementById('nameInput');
+    const noNameMsg = document.getElementById('noNameMsg');
+    const addTagBtn = document.getElementById('addTag');
+    const saveBtn = document.getElementById('save');
+
+    /* ---------------------- */
+
+    lookPreview.addEventListener('mousedown', (e) => e.preventDefault());
+
+    shirtFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'shirt'));
+    shirtBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'shirt'));
+    pantsFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'pants'));
+    pantsBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'pants'));
+    shoesFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'shoes'));
+    shoesBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'shoes'));
+
+    nameInput.addEventListener('input', inputName);
+    addTagBtn.addEventListener('click', addTag);
+    saveBtn.addEventListener('click', saveLook);
+
+    /* --- Inicialização --- */
+
+    const shirtHeight = getComputedStyle(shirtPreview).height;
+    const pantsHeight = getComputedStyle(pantsPreview).height;
+    const shoesHeight = getComputedStyle(shoesPreview).height;
+
+    changeLevel('shirt', shirtList, shirtLvl, shirtPreview, shirtHeight , 0);
+    changeLevel('pants', pantsList, pantsLvl, pantsPreview, pantsHeight , 0);
+    changeLevel('shoes', shoesList, shoesLvl, shoesPreview, shoesHeight , 0);
+    nameInput.value = '';
+
+    /* --- Parte do editor --- */
+
+    function pressedArrow(e, modifier, category) {
+        buttonClicked = e.currentTarget;
+        e.currentTarget.style.transform = 'scale(0.5)';
+
+        if (!animationHappening) {
+            switch (category) {
+                case 'shirt': changeLevel(category, shirtList, shirtLvl, shirtPreview, shirtHeight, modifier); break;
+                case 'pants': changeLevel(category, pantsList, pantsLvl, pantsPreview, pantsHeight, modifier); break;
+                case 'shoes': changeLevel(category, shoesList, shoesLvl, shoesPreview, shoesHeight, modifier); break;
+            }
+        }
+        document.addEventListener('mouseup', releaseArrow);
+    }
+
+    function releaseArrow() {
+        if(buttonClicked) buttonClicked.style.transform = 'scale(1)';
+        buttonClicked = null;
+        document.removeEventListener('mouseup', releaseArrow);
+    }
+
+    function changeLevel (category, list, lvl, preview, height, modifier) {
+        if (list.length === 0) {
+            preview.innerHTML = '<span style="color:#aaa; font-size:12px;">Sem peças</span>';
+            return;
+        }
+
+        lvl += modifier;
+        if (lvl < 0) lvl = list.length - 1;
+        if (lvl >= list.length) lvl = 0;
+
+        switch (category) {
+            case 'shirt': shirtLvl = lvl; break;
+            case 'pants': pantsLvl = lvl; break;
+            case 'shoes': shoesLvl = lvl; break;
+        }
+
+        const currentImg = preview.querySelector('img');
+
+        if (currentImg) {
+            changeImage(currentImg, modifier, list, lvl, preview, height);
+        } else {
+            preview.innerHTML = '';
+            addPiece(list, lvl, preview, height);
+        }
+    }
+
+    function changeImage(image, modifier, list, lvl, preview, height) {
+        switch (modifier) {
+            case 1: image.classList.add('animateOutToLeft'); break;
+            case -1: image.classList.add('animateOutToRight'); break;
+            default: 
+                image.remove();
+                addPiece(list, lvl, preview, height);
+                return;
+        }
+        animationHappening = true;
+
+        image.addEventListener('animationend', (e) => {
+            e.currentTarget.classList.remove('animateOutToLeft', 'animateOutToRight');
+            e.currentTarget.remove();
+
+            const newPiece = addPiece(list, lvl, preview, height);
+            addInAnimation(newPiece, modifier);
+            
+            animationHappening = false;
+        }, {once: true});
+    }
+
+    function addPiece(list, lvl, preview, height) {
+        if (list.length === 0) return;
+        const newPiece = document.createElement('img');
+        newPiece.src = list[lvl].image;
+        newPiece.alt = list[lvl].alt;
+        newPiece.style.height = height;
+        // Fix para o html2canvas conseguir renderizar a imagem sem problemas de CORS
+        newPiece.crossOrigin = "anonymous"; 
+        preview.appendChild(newPiece);
+        return newPiece;
+    }
+
+    function addInAnimation(image, modifier) {
+        if(!image) return;
+        switch (modifier) {
+            case 1: image.classList.add('animateInToLeft'); break;
+            case -1: image.classList.add('animateInToRight'); break;
+        }
+        animationHappening = true;
+
+        image.addEventListener('animationend', (e) => {
+            e.currentTarget.classList.remove('animateInToLeft', 'animateInToRight');
+            animationHappening = false;
+        }, {once: true});
+    }
+
+    /* --- Parte das informações --- */
+
+    function inputName() {
+        if (noNameError) {
+            noNameMsg.textContent = '';
+            noNameError = false;
+        }
+    }
+
+    function addTag() {
+        const newTagText = prompt("Digite o nome da tag:");
+        if (newTagText && newTagText.trim() !== '') {
+            const cleanTag = newTagText.trim();
+
+            if (!tags.includes(cleanTag)) {
+                tags.push(cleanTag);
+                renderTag(cleanTag);
+            }
+        }
+    }
+
+    function renderTag(tagText) {
+    const tagElement = document.createElement('div');
+    // REMOVIDO: clickable-tag (não é mais necessária se usarmos o :not no CSS)
+    tagElement.className = 'tag'; 
+    tagElement.textContent = tagText;
+    tagElement.title = "Clique para remover";
+
+    tagElement.addEventListener('click', function() {
+        const index = tags.indexOf(tagText);
+        if (index > -1) {
+            tags.splice(index, 1);
+        }
+        tagElement.remove();
+    });
+
+    // Insere sempre ANTES do botão de adicionar
+    document.getElementById('tagList').insertBefore(tagElement, addTagBtn);
+}
+
+
+    function saveLook() {
+    if (nameInput.value.trim() === '' && !noNameError) {
+        noNameMsg.textContent = 'Adicione um nome para o seu look.';
+        noNameError = true;
+        return;
+    }
+
+    // 1. Seleciona as setas e a própria div de preview
+    const arrows = document.querySelectorAll('.arrowBack, .arrowFoward');
+    const originalBg = lookPreview.style.backgroundColor; // Guarda o fundo original
+
+    // 2. Esconde as setas e FORÇA o fundo a ser transparente para o print
+    arrows.forEach(arrow => arrow.style.visibility = 'hidden');
+    lookPreview.style.backgroundColor = 'transparent'; 
+
+    html2canvas(lookPreview, {
+        useCORS: true, 
+        backgroundColor: null // Garante que o canvas não pinte um fundo
+    }).then(canvas => {
+        // 3. Restaura a interface original
+        arrows.forEach(arrow => arrow.style.visibility = 'visible');
+        lookPreview.style.backgroundColor = originalBg;
+
+        const base64Image = canvas.toDataURL('image/png');
+        
+        const formData = new FormData();
+        formData.append('name', nameInput.value.trim());
+        formData.append('tags', tags.join(', '));
+        formData.append('image', base64Image);
+        
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        fetch("{% url 'add_outfit' %}", {
+            method: 'POST',
+            headers: { 'X-CSRFToken': csrfToken },
+            body: formData
+        }).then(response => {
+            if(response.ok) {
+                window.location.href = "{% url 'dashboard' %}";
+            } else {
+                alert("Erro ao salvar o look.");
+            }
+        });
+    });
+}
+  </script>
+</body>
+</html>
