@@ -22,7 +22,7 @@ class Piece(models.Model):
 class Outfit(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='outfits/')
+    image = models.ImageField(upload_to='outfits/', storage=MediaCloudinaryStorage())
     
     tags = models.CharField(max_length=200, blank=True, null=True, help_text="Separe as tags por vírgula")
 
