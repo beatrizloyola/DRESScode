@@ -185,10 +185,10 @@ main.dashboard-content {
 }
 
 .card-image-box {
-  background-color: #fff; /* Fundo branco para combinar com o "manequim" */
+  background-color: var(--gray-light); /* Fundo branco para combinar com o "manequim" */
   border-radius: 16px;
   width: 100%;
-  height: 450px; /* Altura fixa para todos os cards serem iguais */
+  height: 300px; /* Altura fixa para todos os cards serem iguais */
   display: flex;
   justify-content: center;
   align-items: center;
