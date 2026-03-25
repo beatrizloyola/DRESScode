@@ -151,8 +151,24 @@ main.dashboard-content {
 
 .outfit-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 40px;
+  /* Cria exatamente 3 colunas de tamanhos iguais */
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Para não quebrar em celulares, adicionamos essa regra */
+@media (max-width: 900px) {
+  .outfit-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas em tablets */
+  }
+}
+
+@media (max-width: 600px) {
+  .outfit-grid {
+    grid-template-columns: 1fr; /* 1 coluna em celulares */
+  }
 }
 
 /* Cards do Dashboard */
@@ -168,19 +184,22 @@ main.dashboard-content {
 }
 
 .card-image-box {
-  background-color: var(--gray-light);
+  background-color: #fff; /* Fundo branco para combinar com o "manequim" */
   border-radius: 16px;
-  aspect-ratio: 4/5;
+  width: 100%;
+  height: 450px; /* Altura fixa para todos os cards serem iguais */
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
   overflow: hidden;
-  background-size: cover;
-  background-position: center;
+  border: 1px solid var(--gray-border);
+  
+  /* Garante que o look apareça inteiro sem esticar */
   background-repeat: no-repeat;
-  border: 1px solid rgba(0,0,0,0.03);
-  transition: box-shadow 0.3s ease;
+  background-position: center;
+  background-size: contain; 
+  padding: 20px;
 }
 
 .card:hover .card-image-box {

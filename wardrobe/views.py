@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Piece
+from .models import Piece, Outfit
+import json
+import base64
+from django.core.files.base import ContentFile
+from django.http import JsonResponse
 
 def landing_page(request):
     return render(request, 'Landing.html')
@@ -47,8 +51,22 @@ def login_page(request):
 
     return render(request, 'Login.html')
 
+@login_required(login_url='login')
 def dashboard_page(request):
-    return render(request, 'Dashboard.html')
+    search_query = request.GET.get('q', '')
+    
+    # Pega todos os outfits do usuário logado
+    outfits = Outfit.objects.filter(user=request.user)
+    
+    # Se pesquisou algo, filtra pelo nome
+    if search_query:
+        outfits = outfits.filter(name__icontains=search_query)
+        
+    context = {
+        'outfits': outfits,
+        'search_query': search_query
+    }
+    return render(request, 'Dashboard.html', context)
 
 def logout_user(request):
     logout(request)
@@ -119,3 +137,50 @@ def my_pieces_page(request):
     }
     
     return render(request, 'MyPieces.html', context)
+
+@login_required(login_url='login')
+def add_outfit_page(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        tags = request.POST.get('tags', '')
+        image_data = request.POST.get('image') # Recebe a imagem em texto (Base64)
+
+        if name and image_data:
+            # Converte o texto gerado pelo JavaScript de volta para um arquivo de imagem
+            format, imgstr = image_data.split(';base64,') 
+            ext = format.split('/')[-1] 
+            data = ContentFile(base64.b64decode(imgstr), name=f'{request.user.username}_outfit_{name}.{ext}')
+            
+            # Salva no banco de dados
+            Outfit.objects.create(
+                user=request.user,
+                name=name,
+                tags=tags,
+                image=data
+            )
+            return JsonResponse({'status': 'success'})
+        return JsonResponse({'status': 'error', 'message': 'Faltam dados'})
+
+    # --- Se for GET (Carregando a página) ---
+    pieces = Piece.objects.filter(user=request.user)
+    
+    # Função auxiliar para transformar as roupas num formato que o JavaScript entende
+    def serialize_pieces(queryset):
+        return [{'id': p.id, 'name': p.name, 'category': p.category, 'image': p.image.url, 'alt': p.name} for p in queryset]
+        
+    context = {
+        'shirts_json': json.dumps(serialize_pieces(pieces.filter(category='shirt'))),
+        'pants_json': json.dumps(serialize_pieces(pieces.filter(category='pants'))),
+        'shoes_json': json.dumps(serialize_pieces(pieces.filter(category='shoes'))),
+    }
+    return render(request, 'NewOutfit.html', context)
+
+@login_required(login_url='login')
+def delete_outfit(request, outfit_id):
+    # Garante que o outfit pertence ao usuário logado antes de deletar
+    outfit = get_object_or_404(Outfit, id=outfit_id, user=request.user)
+    
+    if request.method == 'POST':
+        outfit.delete()
+        
+    return redirect('dashboard')

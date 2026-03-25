@@ -17,20 +17,18 @@
       <img src="{% static 'media/logo/Logo Horizontal.png' %}" alt="DRESScode Logo">
     </a>
     
-    <div class="search-container">
-      <input type="text" placeholder="Pesquisar em meus outfits">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-        <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
-      </svg>
-    </div>
+    <form method="GET" action="{% url 'dashboard' %}" class="search-container">
+      <input type="text" name="q" value="{{ search_query }}" placeholder="Pesquisar em meus outfits">
+      <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer; display: flex;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
+        </svg>
+      </button>
+    </form>
 
       <div class="nav-landing">
-        <a href="#" class="btn btn-outline">Gerenciar Peças</a>
+        <a href="{% url 'my_pieces' %}" class="btn btn-outline">Gerenciar Peças</a>
         <a href="#" class="btn btn-primary">Minha Conta</a>
-        
-      <!-- 
-        <a href="{% url 'logout' %}" class="btn btn-primary" style="background-color: #d9534f; border-color: #d43f3a;">Sair</a>
-      -->
       </div>
   </nav>
 
@@ -38,66 +36,44 @@
     
     <div class="page-header" style="margin-bottom: 40px;">
       <div class="header-titles">
-        <h1 style="font-family: var(--font-serif); font-size: 36px; margin-bottom: 4px;">Olá, {{ user.first_name }}! Seus Outfits</h1>
+        <h1 style="font-family: var(--font-serif); font-size: 36px; margin-bottom: 4px;">Olá, {{ user.first_name }}!</h1>
         <p style="color: #666;">Visualize e edite suas combinações.</p>
       </div>
+      <a href="{% url 'add_outfit' %}" class="btn btn-primary">Criar Novo Outfit</a>
     </div>
 
     <div class="outfit-grid">
       
-      <div class="card">
-        <div class="card-image-box" style="background-image: url('{% static 'media/outfits/outfit1.png' %}');">
-          <div class="card-actions">
-            <button class="action-btn edit-btn" title="Editar Outfit">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/>
-              </svg>
-            </button>
-            <button class="action-btn delete-btn" title="Excluir Outfit">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-        <h2 class="card-title">Look de Verão</h2>
-        <div class="card-tags">
-          <span class="tag">Casual</span>
-          <span class="tag">Dia</span>
-        </div>
-      </div>
+      {% for outfit in outfits %}
+        <div class="card">
+          <div class="card-image-box" style="background-image: url('{{ outfit.image.url }}');">
+            <div class="card-actions">
+              <a href="#" class="action-btn edit-btn" title="Editar Outfit">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor"><path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg>
+              </a>
 
-      <div class="card">
-        <div class="card-image-box" style="background-image: url('{% static 'media/outfits/outfit2.png' %}');">
-          <div class="card-actions">
-            <button class="action-btn edit-btn" title="Editar Outfit">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg>
-            </button>
-            <button class="action-btn delete-btn" title="Excluir Outfit">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
-            </button>
+              <form action="{% url 'delete_outfit' outfit.id %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="action-btn delete-btn" title="Excluir Outfit" onclick="return confirm('Deseja realmente excluir este outfit?');">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
+                </button>
+              </form>
+            </div>
+          </div>
+          <h2 class="card-title">{{ outfit.name }}</h2>
+          
+          <div class="card-tags">
+            {% for tag in outfit.get_tags_list %}
+              <span class="tag">{{ tag }}</span>
+            {% endfor %}
           </div>
         </div>
-        <h2 class="card-title">Reunião de Negócios</h2>
-        <div class="card-tags">
-          <span class="tag">Formal</span>
+      
+      {% empty %}
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #666;">
+          <p>Você ainda não criou nenhum outfit. Que tal começar agora?</p>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="card-image-box">
-          <div class="card-actions">
-            <button class="action-btn edit-btn" title="Editar Outfit">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg>
-            </button>
-            <button class="action-btn delete-btn" title="Excluir Outfit">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
-            </button>
-          </div>
-        </div>
-        <h2 class="card-title">Passeio no Parque</h2>
-        <div class="card-tags"></div>
-      </div>
+      {% endfor %}
 
     </div>
   </main>
