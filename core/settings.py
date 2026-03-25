@@ -92,6 +92,5 @@ CLOUDINARY_STORAGE = {
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-# MEDIA_URL = '/media/' # O Cloudinary Storage gerencia isso internamente com o prefixo correto
-
+MEDIA_URL = 'https://res.cloudinary.com/dgaibaj67/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
