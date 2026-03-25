@@ -146,15 +146,20 @@ def add_outfit_page(request):
 
         if name and image_data:
             format, imgstr = image_data.split(';base64,') 
-            ext = format.split('/')[-1] 
-            data = ContentFile(base64.b64decode(imgstr), name=f'{request.user.username}_outfit_{name}.{ext}')
+            ext = format.split('/')[-1].split(';')[0] # Extração mais segura da extensão
+            filename = f'{request.user.username}_outfit_{name}.{ext}'
+            data = ContentFile(base64.b64decode(imgstr), name=filename)
             
-            Outfit.objects.create(
+            # Cria o objeto PRIMEIRO, sem a imagem
+            novo_outfit = Outfit(
                 user=request.user,
                 name=name,
-                tags=tags,
-                image=data
+                tags=tags
             )
+            
+            # Salva a imagem DEPOIS usando o método que força o envio para o Storage (Cloud)
+            novo_outfit.image.save(filename, data, save=True)
+            
             return JsonResponse({'status': 'success'})
         return JsonResponse({'status': 'error', 'message': 'Faltam dados'})
 
@@ -190,13 +195,16 @@ def edit_outfit_page(request, outfit_id):
 
         if name and image_data:
             format, imgstr = image_data.split(';base64,')
-            ext = format.split('/')[-1]
-            data = ContentFile(base64.b64decode(imgstr), name=f'edit_{outfit.id}.{ext}')
+            ext = format.split('/')[-1].split(';')[0]
+            filename = f'edit_{outfit.id}.{ext}'
+            data = ContentFile(base64.b64decode(imgstr), name=filename)
             
             outfit.name = name
             outfit.tags = tags
-            outfit.image = data
-            outfit.save()
+            
+            # Salva a imagem usando o método que força o envio para o Storage (Cloud)
+            outfit.image.save(filename, data, save=True)
+            
             return JsonResponse({'status': 'success'})
 
     pieces = Piece.objects.filter(user=request.user)
