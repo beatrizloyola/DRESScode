@@ -15,6 +15,7 @@
   --white: #fff;
   --gray-light: #f4f4f4;
   --gray-border: #e0e0e0;
+  --danger: #d41313;
   
   /* Medidas */
   --radius-btn: 30px;
@@ -295,9 +296,9 @@ a.tag:hover {
 }
 
 .tagList .tag:not(.add-tag-btn):hover {
-    background-color: #ff4d4d !important;
+    background-color: var(--danger) !important;
     color: white !important;
-    border-color: #ff4d4d !important;
+    border-color: var(--danger) !important;
 }
 
 .tagList .tag:not(.add-tag-btn):hover::after {
@@ -665,7 +666,7 @@ footer .integrantes p {
 }
 
 .error-msg {
-  color: #d93025;
+  color: var(--danger);
   font-size: 13px;
   margin-top: 6px;
   min-height: 16px;
@@ -868,7 +869,7 @@ footer .integrantes p {
 }
 
 .logout-link {
-  color: #d93025; /* Um tom de vermelho elegante para indicar saída/perigo */
+  color: var(--danger); /* Um tom de vermelho elegante para indicar saída/perigo */
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
@@ -1033,7 +1034,7 @@ footer .integrantes p {
 
 /* Detalhe elegante: Lixeira fica vermelha ao passar o mouse */
 .delete-btn:hover svg {
-  fill: #d93025; 
+  fill: var(--danger); 
 }
 
 /* Efeito Hover do Lápis: Fica com a cor da marca (Preto forte) */
@@ -1055,9 +1056,9 @@ footer .integrantes p {
   justify-content: center;
   padding: 10px 25px;
   border-radius: var(--radius-btn); /* Usa a variável 30px que você já tem */
-  border: 1px solid #ff4d4d;
+  border: 1px solid var(--danger);
   background-color: transparent;
-  color: #ff4d4d;
+  color: var(--danger);
   font-family: var(--font-main);
   font-weight: 600;
   text-decoration: none;
@@ -1067,7 +1068,7 @@ footer .integrantes p {
 }
 
 .btn-logout:hover {
-  background-color: #ff4d4d;
+  background-color: var(--danger);
   color: var(--white);
   box-shadow: 0 4px 12px rgba(255, 77, 77, 0.2);
   transform: translateY(-1px);
