@@ -64,7 +64,9 @@
           
           <div class="card-tags">
             {% for tag in outfit.get_tags_list %}
-              <span class="tag">{{ tag }}</span>
+              <a href="?q={{ tag }}" class="tag">
+                {{ tag }}
+              </a>
             {% endfor %}
           </div>
         </div>

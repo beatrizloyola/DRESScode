@@ -7,6 +7,7 @@ import json
 import base64
 from django.core.files.base import ContentFile
 from django.http import JsonResponse
+from django.db import models
 
 def landing_page(request):
     return render(request, 'Landing.html')
@@ -53,18 +54,18 @@ def login_page(request):
 
 @login_required(login_url='login')
 def dashboard_page(request):
-    search_query = request.GET.get('q', '')
-    
-    # Pega todos os outfits do usuário logado
+    query = request.GET.get('q')
     outfits = Outfit.objects.filter(user=request.user)
-    
-    # Se pesquisou algo, filtra pelo nome
-    if search_query:
-        outfits = outfits.filter(name__icontains=search_query)
-        
+
+    if query:
+        outfits = outfits.filter(
+            models.Q(name__icontains=query) | 
+            models.Q(tags__icontains=query)
+        )
+
     context = {
         'outfits': outfits,
-        'search_query': search_query
+        'search_query': query,
     }
     return render(request, 'Dashboard.html', context)
 
@@ -116,19 +117,15 @@ def delete_piece(request, piece_id):
         
     return redirect('my_pieces')
 
-# --- AQUI ESTÁ A NOSSA FUNÇÃO CORRIGIDA ---
 @login_required(login_url='login')
 def my_pieces_page(request):
     search_query = request.GET.get('q', '')
     
-    # 1. Pega todas as peças do usuário
     pieces = Piece.objects.filter(user=request.user)
     
-    # 2. Se houver algo na pesquisa, filtra as peças pelo nome
     if search_query:
         pieces = pieces.filter(name__icontains=search_query)
 
-    # 3. Divide as peças (agora já filtradas) nas categorias
     context = {
         'shirts': pieces.filter(category='shirt'),
         'pants': pieces.filter(category='pants'),
@@ -143,15 +140,13 @@ def add_outfit_page(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         tags = request.POST.get('tags', '')
-        image_data = request.POST.get('image') # Recebe a imagem em texto (Base64)
+        image_data = request.POST.get('image')
 
         if name and image_data:
-            # Converte o texto gerado pelo JavaScript de volta para um arquivo de imagem
             format, imgstr = image_data.split(';base64,') 
             ext = format.split('/')[-1] 
             data = ContentFile(base64.b64decode(imgstr), name=f'{request.user.username}_outfit_{name}.{ext}')
             
-            # Salva no banco de dados
             Outfit.objects.create(
                 user=request.user,
                 name=name,
@@ -161,10 +156,8 @@ def add_outfit_page(request):
             return JsonResponse({'status': 'success'})
         return JsonResponse({'status': 'error', 'message': 'Faltam dados'})
 
-    # --- Se for GET (Carregando a página) ---
     pieces = Piece.objects.filter(user=request.user)
     
-    # Função auxiliar para transformar as roupas num formato que o JavaScript entende
     def serialize_pieces(queryset):
         return [{'id': p.id, 'name': p.name, 'category': p.category, 'image': p.image.url, 'alt': p.name} for p in queryset]
         
@@ -177,7 +170,6 @@ def add_outfit_page(request):
 
 @login_required(login_url='login')
 def delete_outfit(request, outfit_id):
-    # Garante que o outfit pertence ao usuário logado antes de deletar
     outfit = get_object_or_404(Outfit, id=outfit_id, user=request.user)
     
     if request.method == 'POST':
@@ -199,14 +191,12 @@ def edit_outfit_page(request, outfit_id):
             ext = format.split('/')[-1]
             data = ContentFile(base64.b64decode(imgstr), name=f'edit_{outfit.id}.{ext}')
             
-            # Atualiza o objeto existente
             outfit.name = name
             outfit.tags = tags
             outfit.image = data
             outfit.save()
             return JsonResponse({'status': 'success'})
 
-    # GET: Carrega dados para o editor
     pieces = Piece.objects.filter(user=request.user)
     
     def serialize_pieces(queryset):
@@ -217,7 +207,6 @@ def edit_outfit_page(request, outfit_id):
         'shirts_json': json.dumps(serialize_pieces(pieces.filter(category='shirt'))),
         'pants_json': json.dumps(serialize_pieces(pieces.filter(category='pants'))),
         'shoes_json': json.dumps(serialize_pieces(pieces.filter(category='shoes'))),
-        # Passamos as tags atuais como uma lista simples para o JS
         'current_tags_json': json.dumps(outfit.get_tags_list()), 
     }
     return render(request, 'EditOutfit.html', context)

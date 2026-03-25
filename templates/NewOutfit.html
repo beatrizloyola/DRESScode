@@ -228,19 +228,36 @@
     }
 
     function addTag() {
-        // Pede para o usuário digitar a tag
-        const newTagText = prompt("Digite o nome da tag (ex: Casual):");
+        const newTagText = prompt("Digite o nome da tag:");
         if (newTagText && newTagText.trim() !== '') {
             const cleanTag = newTagText.trim();
-            tags.push(cleanTag);
-            
-            // Cria o elemento visual e adiciona antes do botão "+ Adicionar"
-            const tagElement = document.createElement('div');
-            tagElement.className = 'tag';
-            tagElement.textContent = cleanTag;
-            document.getElementById('tagList').insertBefore(tagElement, addTagBtn);
+
+            if (!tags.includes(cleanTag)) {
+                tags.push(cleanTag);
+                renderTag(cleanTag);
+            }
         }
     }
+
+    function renderTag(tagText) {
+    const tagElement = document.createElement('div');
+    // REMOVIDO: clickable-tag (não é mais necessária se usarmos o :not no CSS)
+    tagElement.className = 'tag'; 
+    tagElement.textContent = tagText;
+    tagElement.title = "Clique para remover";
+
+    tagElement.addEventListener('click', function() {
+        const index = tags.indexOf(tagText);
+        if (index > -1) {
+            tags.splice(index, 1);
+        }
+        tagElement.remove();
+    });
+
+    // Insere sempre ANTES do botão de adicionar
+    document.getElementById('tagList').insertBefore(tagElement, addTagBtn);
+}
+
 
     function saveLook() {
         if (nameInput.value.trim() === '' && !noNameError) {

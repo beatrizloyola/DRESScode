@@ -215,18 +215,110 @@ main.dashboard-content {
 
 .card-tags {
   display: flex;
-  gap: 10px;
   flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
 }
 
 .tag {
-  border: 1px solid var(--black);
-  padding: 6px 18px;
-  border-radius: var(--radius-btn);
-  font-size: 13px;
-  color: var(--black);
-  background-color: transparent;
-  letter-spacing: 0.03em;
+  background-color: var(--gray-light);
+  color: #666;
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.tag:hover {
+  background-color: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+/* Seletor mais específico para garantir que funcione em links */
+a.tag, .tag {
+  display: inline-block; /* Garante que o padding funcione bem */
+  background-color: var(--gray-light) !important; /* !important garante a base */
+  color: #666 !important;
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  text-decoration: none !important;
+}
+
+/* Hover com especificidade reforçada */
+a.tag:hover {
+  background-color: var(--black) !important;
+  color: var(--white) !important;
+  border-color: var(--black) !important;
+  transform: translateY(-2px); /* Efeito extra de levante */
+}
+
+.tagList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px; /* Este é o espaçamento entre as tags */
+    margin-top: 10px;
+    align-items: center;
+}
+
+/* Estilo base para todas as tags e o botão de adicionar */
+.tagList .tag {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: var(--radius-btn);
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    transition: all 0.2s ease;
+    border: 1px solid var(--gray-border);
+    background-color: var(--gray-light);
+    color: #666;
+    text-decoration: none;
+    margin: 0; /* O gap já cuida do espaçamento */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+}
+
+/* COMPORTAMENTO DE EXCLUSÃO: Apenas para tags que NÃO são o botão de adicionar */
+.add-tag-btn {
+    padding: 6px 15px;
+    white-space: nowrap;
+}
+
+.tagList .tag:not(.add-tag-btn):hover {
+    background-color: #ff4d4d !important;
+    color: white !important;
+    border-color: #ff4d4d !important;
+}
+
+.tagList .tag:not(.add-tag-btn):hover::after {
+    content: ' ✕';
+    font-size: 10px;
+    margin-left: 5px;
+}
+
+/* COMPORTAMENTO DO BOTÃO ADICIONAR: Visual diferenciado */
+.tagList .add-tag-btn {
+    border-style: dashed;
+    border-color: var(--black);
+    color: var(--black);
+    background-color: transparent;
+    font-weight: 600;
+}
+
+.tagList .add-tag-btn:hover {
+    background-color: var(--black) !important;
+    color: var(--white) !important;
+    border-style: solid;
 }
 
 /* ── 5. ÁREA DA LANDING PAGE ── */

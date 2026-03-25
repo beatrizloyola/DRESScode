@@ -127,10 +127,7 @@
 
     // Preenche as tags visuais vindas do banco de dados
     currentTags.forEach(tagText => {
-        const tagElement = document.createElement('div');
-        tagElement.className = 'tag';
-        tagElement.textContent = tagText;
-        document.getElementById('tagList').insertBefore(tagElement, addTagBtn);
+        renderTag(tagText);
     });
 
     /* --- Funções do Editor --- */
@@ -223,17 +220,37 @@
         }
     }
 
-    function addTag() {
+        function addTag() {
         const newTagText = prompt("Digite o nome da tag:");
         if (newTagText && newTagText.trim() !== '') {
             const cleanTag = newTagText.trim();
-            tags.push(cleanTag);
-            const tagElement = document.createElement('div');
-            tagElement.className = 'tag';
-            tagElement.textContent = cleanTag;
-            document.getElementById('tagList').insertBefore(tagElement, addTagBtn);
+            
+            // Evita tags duplicadas no array
+            if (!tags.includes(cleanTag)) {
+                tags.push(cleanTag);
+                renderTag(cleanTag);
+            }
         }
     }
+
+    function renderTag(tagText) {
+    const tagElement = document.createElement('div');
+    // REMOVIDO: clickable-tag (não é mais necessária se usarmos o :not no CSS)
+    tagElement.className = 'tag'; 
+    tagElement.textContent = tagText;
+    tagElement.title = "Clique para remover";
+
+    tagElement.addEventListener('click', function() {
+        const index = tags.indexOf(tagText);
+        if (index > -1) {
+            tags.splice(index, 1);
+        }
+        tagElement.remove();
+    });
+
+    // Insere sempre ANTES do botão de adicionar
+    document.getElementById('tagList').insertBefore(tagElement, addTagBtn);
+}
 
     function saveLook() {
         if (nameInput.value.trim() === '' && !noNameError) {
