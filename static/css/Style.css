@@ -1047,3 +1047,37 @@ footer .integrantes p {
     opacity: 1;
   }
 }
+
+/* Botão de Logout Estilo Pílula */
+.btn-logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 25px;
+  border-radius: var(--radius-btn); /* Usa a variável 30px que você já tem */
+  border: 1px solid #ff4d4d;
+  background-color: transparent;
+  color: #ff4d4d;
+  font-family: var(--font-main);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-logout:hover {
+  background-color: #ff4d4d;
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(255, 77, 77, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Ajuste de espaçamento no container das ações */
+.account-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+  gap: 20px; /* Garante que não grudem em telas menores */
+}

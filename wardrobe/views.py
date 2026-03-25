@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from .models import Piece, Outfit
 import json
@@ -8,6 +8,7 @@ import base64
 from django.core.files.base import ContentFile
 from django.http import JsonResponse
 from django.db import models
+from django.contrib import messages
 
 def landing_page(request):
     return render(request, 'Landing.html')
@@ -210,3 +211,31 @@ def edit_outfit_page(request, outfit_id):
         'current_tags_json': json.dumps(outfit.get_tags_list()), 
     }
     return render(request, 'EditOutfit.html', context)
+
+@login_required(login_url='login')
+def my_account(request):
+    user = request.user
+    
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        new_password = request.POST.get('new-password')
+
+        # Atualiza dados básicos
+        user.first_name = name
+        user.username = email
+        user.email = email
+        
+        # Atualiza senha se fornecida
+        if new_password and new_password.strip() != "":
+            user.set_password(new_password)
+            user.save()
+            # Impede que o usuário seja deslogado ao mudar a senha
+            update_session_auth_hash(request, user)
+        else:
+            user.save()
+            
+        messages.success(request, 'Suas informações foram atualizadas com sucesso!')
+        return redirect('my_account')
+
+    return render(request, 'MyAccount.html')
