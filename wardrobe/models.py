@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 class Piece(models.Model):
     CATEGORY_CHOICES = [
@@ -9,7 +10,7 @@ class Piece(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='pieces/')
+    image = models.ImageField(upload_to='pieces/', storage=MediaCloudinaryStorage())
     name = models.CharField(max_length=100, blank=True, null=True)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     
