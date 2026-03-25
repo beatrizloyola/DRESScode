@@ -1,5 +1,3 @@
-1/0
-
 from pathlib import Path
 import os
 import environ
@@ -23,15 +21,15 @@ ALLOWED_HOSTS = ['.onrender.com', '127.0.0.1', 'localhost']
 
 # 2. Aplicativos Instalados (A ordem aqui é CRUCIAL)
 INSTALLED_APPS = [
-    'cloudinary_storage',  # Deve vir antes de staticfiles
+    'cloudinary_storage',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary',          # Obrigatório para a integração
+    'cloudinary',
     'django.contrib.staticfiles',
-    'wardrobe',            # Seu app
+    'wardrobe',
 ]
 
 # 3. Middleware
@@ -92,5 +90,5 @@ CLOUDINARY_STORAGE = {
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-MEDIA_URL = 'https://res.cloudinary.com/dgaibaj67/'
+MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
