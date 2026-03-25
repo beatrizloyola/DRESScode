@@ -17,3 +17,18 @@ class Piece(models.Model):
 
     def __str__(self):
         return self.name if self.name else f"Peça ({self.category}) de {self.user.username}"
+    
+class Outfit(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='outfits/')
+    
+    tags = models.CharField(max_length=200, blank=True, null=True, help_text="Separe as tags por vírgula")
+
+    def get_tags_list(self):
+        if self.tags:
+            return [tag.strip() for tag in self.tags.split(',')]
+        return []
+
+    def __str__(self):
+        return self.name

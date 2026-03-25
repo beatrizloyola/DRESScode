@@ -11,4 +11,6 @@ urlpatterns = [
     path('minhas-pecas/', views.my_pieces_page, name='my_pieces'),
     path('editar-peca/<int:piece_id>/', views.edit_piece, name='edit_piece'),
     path('excluir-peca/<int:piece_id>/', views.delete_piece, name='delete_piece'),
+    path('outfits/add/', views.add_outfit_page, name='add_outfit'),
+    path('excluir-outfit/<int:outfit_id>/', views.delete_outfit, name='delete_outfit'),
 ]
