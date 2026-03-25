@@ -184,3 +184,40 @@ def delete_outfit(request, outfit_id):
         outfit.delete()
         
     return redirect('dashboard')
+
+@login_required(login_url='login')
+def edit_outfit_page(request, outfit_id):
+    outfit = get_object_or_404(Outfit, id=outfit_id, user=request.user)
+    
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        tags = request.POST.get('tags', '')
+        image_data = request.POST.get('image')
+
+        if name and image_data:
+            format, imgstr = image_data.split(';base64,')
+            ext = format.split('/')[-1]
+            data = ContentFile(base64.b64decode(imgstr), name=f'edit_{outfit.id}.{ext}')
+            
+            # Atualiza o objeto existente
+            outfit.name = name
+            outfit.tags = tags
+            outfit.image = data
+            outfit.save()
+            return JsonResponse({'status': 'success'})
+
+    # GET: Carrega dados para o editor
+    pieces = Piece.objects.filter(user=request.user)
+    
+    def serialize_pieces(queryset):
+        return [{'id': p.id, 'name': p.name, 'category': p.category, 'image': p.image.url, 'alt': p.name} for p in queryset]
+        
+    context = {
+        'outfit': outfit,
+        'shirts_json': json.dumps(serialize_pieces(pieces.filter(category='shirt'))),
+        'pants_json': json.dumps(serialize_pieces(pieces.filter(category='pants'))),
+        'shoes_json': json.dumps(serialize_pieces(pieces.filter(category='shoes'))),
+        # Passamos as tags atuais como uma lista simples para o JS
+        'current_tags_json': json.dumps(outfit.get_tags_list()), 
+    }
+    return render(request, 'EditOutfit.html', context)
