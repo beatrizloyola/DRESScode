@@ -7,9 +7,6 @@ from .models import Piece
 def landing_page(request):
     return render(request, 'Landing.html')
 
-def login_page(request):
-    return render(request, 'Login.html')
-
 def signup_page(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -77,17 +74,6 @@ def add_piece_page(request):
     return render(request, 'NewPiece.html')
 
 @login_required(login_url='login')
-def my_pieces_page(request):
-    user_pieces = Piece.objects.filter(user=request.user)
-    context = {
-        'shirts': user_pieces.filter(category='shirt'),
-        'pants': user_pieces.filter(category='pants'),
-        'shoes': user_pieces.filter(category='shoes'),
-    }
-    
-    return render(request, 'MyPieces.html', context)
-
-@login_required(login_url='login')
 def edit_piece(request, piece_id):
     piece = get_object_or_404(Piece, id=piece_id, user=request.user)
     
@@ -111,3 +97,25 @@ def delete_piece(request, piece_id):
         piece.delete()
         
     return redirect('my_pieces')
+
+# --- AQUI ESTÁ A NOSSA FUNÇÃO CORRIGIDA ---
+@login_required(login_url='login')
+def my_pieces_page(request):
+    search_query = request.GET.get('q', '')
+    
+    # 1. Pega todas as peças do usuário
+    pieces = Piece.objects.filter(user=request.user)
+    
+    # 2. Se houver algo na pesquisa, filtra as peças pelo nome
+    if search_query:
+        pieces = pieces.filter(name__icontains=search_query)
+
+    # 3. Divide as peças (agora já filtradas) nas categorias
+    context = {
+        'shirts': pieces.filter(category='shirt'),
+        'pants': pieces.filter(category='pants'),
+        'shoes': pieces.filter(category='shoes'),
+        'search_query': search_query
+    }
+    
+    return render(request, 'MyPieces.html', context)
