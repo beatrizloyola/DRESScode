@@ -55,7 +55,8 @@ def login_page(request):
 
 @login_required(login_url='login')
 def dashboard_page(request):
-    query = request.GET.get('q')
+    query = request.GET.get('q') or '' 
+    
     outfits = Outfit.objects.filter(user=request.user)
 
     if query:
