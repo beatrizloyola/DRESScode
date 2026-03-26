@@ -67,17 +67,27 @@
   </main>
 
   <script>
-    // Dados carregados do Django
     const shirtList = {{ shirts_json|safe }};
     const pantsList = {{ pants_json|safe }};
     const shoesList = {{ shoes_json|safe }};
     const currentTags = {{ current_tags_json|safe }};
 
-    let shirtLvl = 0;
-    let pantsLvl = 0;
-    let shoesLvl = 0;
+    // Pegando os IDs que o Django salvou no banco
+    const currentShirtId = {{ outfit.shirt_id|default:"null" }};
+    const currentPantsId = {{ outfit.pants_id|default:"null" }};
+    const currentShoesId = {{ outfit.shoes_id|default:"null" }};
 
-    const tags = [...currentTags]; // Inicia com as tags já existentes
+    // Procurando usando == para não ter erro de tipo (texto vs número)
+    let shirtLvl = shirtList.findIndex(piece => piece.id == currentShirtId);
+    if (shirtLvl === -1) shirtLvl = 0; 
+
+    let pantsLvl = pantsList.findIndex(piece => piece.id == currentPantsId);
+    if (pantsLvl === -1) pantsLvl = 0;
+
+    let shoesLvl = shoesList.findIndex(piece => piece.id == currentShoesId);
+    if (shoesLvl === -1) shoesLvl = 0;
+    
+    const tags = [...currentTags]; 
     let buttonClicked = null;
     let animationHappening = false;
     let noNameError = false;
@@ -97,8 +107,6 @@
     const addTagBtn = document.getElementById('addTag');
     const saveBtn = document.getElementById('save');
 
-    /* --- Listeners --- */
-
     lookPreview.addEventListener('mousedown', (e) => e.preventDefault());
     shirtFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'shirt'));
     shirtBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'shirt'));
@@ -111,26 +119,20 @@
     addTagBtn.addEventListener('click', addTag);
     saveBtn.addEventListener('click', saveLook);
 
-    /* --- Inicialização --- */
-
     const shirtHeight = getComputedStyle(shirtPreview).height;
     const pantsHeight = getComputedStyle(pantsPreview).height;
     const shoesHeight = getComputedStyle(shoesPreview).height;
 
-    // Carrega as primeiras peças
+    // Carrega as peças exatas que estavam no banco!
     changeLevel('shirt', shirtList, shirtLvl, shirtPreview, shirtHeight , 0);
     changeLevel('pants', pantsList, pantsLvl, pantsPreview, pantsHeight , 0);
     changeLevel('shoes', shoesList, shoesLvl, shoesPreview, shoesHeight , 0);
     
-    // Preenche o nome vindo do banco de dados
     nameInput.value = "{{ outfit.name|escapejs }}";
 
-    // Preenche as tags visuais vindas do banco de dados
     currentTags.forEach(tagText => {
         renderTag(tagText);
     });
-
-    /* --- Funções do Editor --- */
 
     function pressedArrow(e, modifier, category) {
         buttonClicked = e.currentTarget;
@@ -220,12 +222,10 @@
         }
     }
 
-        function addTag() {
+    function addTag() {
         const newTagText = prompt("Digite o nome da tag:");
         if (newTagText && newTagText.trim() !== '') {
             const cleanTag = newTagText.trim();
-            
-            // Evita tags duplicadas no array
             if (!tags.includes(cleanTag)) {
                 tags.push(cleanTag);
                 renderTag(cleanTag);
@@ -234,23 +234,21 @@
     }
 
     function renderTag(tagText) {
-    const tagElement = document.createElement('div');
-    // REMOVIDO: clickable-tag (não é mais necessária se usarmos o :not no CSS)
-    tagElement.className = 'tag'; 
-    tagElement.textContent = tagText;
-    tagElement.title = "Clique para remover";
+        const tagElement = document.createElement('div');
+        tagElement.className = 'tag'; 
+        tagElement.textContent = tagText;
+        tagElement.title = "Clique para remover";
 
-    tagElement.addEventListener('click', function() {
-        const index = tags.indexOf(tagText);
-        if (index > -1) {
-            tags.splice(index, 1);
-        }
-        tagElement.remove();
-    });
+        tagElement.addEventListener('click', function() {
+            const index = tags.indexOf(tagText);
+            if (index > -1) {
+                tags.splice(index, 1);
+            }
+            tagElement.remove();
+        });
 
-    // Insere sempre ANTES do botão de adicionar
-    document.getElementById('tagList').insertBefore(tagElement, addTagBtn);
-}
+        document.getElementById('tagList').insertBefore(tagElement, addTagBtn);
+    }
 
     function saveLook() {
         if (nameInput.value.trim() === '' && !noNameError) {
@@ -279,6 +277,11 @@
             formData.append('tags', tags.join(', '));
             formData.append('image', base64Image);
             
+            // Enviando as peças de novo se a pessoa quiser trocar algo na edição!
+            if (shirtList.length > 0) formData.append('shirt_id', shirtList[shirtLvl].id);
+            if (pantsList.length > 0) formData.append('pants_id', pantsList[pantsLvl].id);
+            if (shoesList.length > 0) formData.append('shoes_id', shoesList[shoesLvl].id);
+            
             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
             
             fetch("{% url 'edit_outfit' outfit.id %}", {
@@ -296,7 +299,6 @@
             });
         });
     }
-  </script>
   </script>
 </body>
 </html>
