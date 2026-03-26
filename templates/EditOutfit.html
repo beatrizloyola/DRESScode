@@ -196,8 +196,24 @@
         const newPiece = document.createElement('img');
         newPiece.src = list[lvl].image;
         newPiece.alt = list[lvl].alt;
-        newPiece.style.height = height;
-        newPiece.crossOrigin = "anonymous"; 
+        
+        // --- A NOVA LÓGICA DE TAMANHO ---
+        newPiece.style.maxHeight = height; // A imagem pode ser menor, mas nunca maior que a caixa
+        newPiece.style.maxWidth = '180px';
+        newPiece.style.width = 'auto'; // A largura se ajusta automaticamente
+        newPiece.style.objectFit = 'contain'; // Mantém as proporções reais da peça
+        
+        // Dica de Ouro: Se for a parte de baixo (calça/saia), alinha no topo para grudar na blusa!
+        if (list === pantsList) {
+             newPiece.style.objectPosition = 'top center';
+        } else if (list === shoesList) {
+             newPiece.style.objectPosition = 'top center'; // Sapatos grudam no final da perna
+        } else {
+             newPiece.style.objectPosition = 'bottom center'; // Blusas grudam na cintura
+        }
+        // ---------------------------------
+        
+        newPiece.style.crossOrigin = "anonymous"; 
         preview.appendChild(newPiece);
         return newPiece;
     }
