@@ -91,6 +91,9 @@
         const reader = new FileReader();
         reader.onload = function(e) {
           imagePreview.style.backgroundImage = `url('${e.target.result}')`;
+          imagePreview.style.backgroundSize = 'contain'; // Impede o zoom exagerado
+          imagePreview.style.backgroundRepeat = 'no-repeat'; // Impede que a imagem se repita
+          imagePreview.style.backgroundPosition = 'center'; // Centraliza a peça
           imagePreview.style.display = 'block';
           dropzoneLabel.style.opacity = '0'; // Esconde o texto/ícone
         }
