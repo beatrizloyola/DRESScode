@@ -24,6 +24,10 @@ class Outfit(models.Model):
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='outfits/', storage=MediaCloudinaryStorage())
     
+    shirt = models.ForeignKey(Piece, on_delete=models.SET_NULL, null=True, blank=True, related_name='outfits_shirt')
+    pants = models.ForeignKey(Piece, on_delete=models.SET_NULL, null=True, blank=True, related_name='outfits_pants')
+    shoes = models.ForeignKey(Piece, on_delete=models.SET_NULL, null=True, blank=True, related_name='outfits_shoes')
+
     tags = models.CharField(max_length=200, blank=True, null=True, help_text="Separe as tags por vírgula")
 
     def get_tags_list(self):

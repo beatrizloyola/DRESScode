@@ -144,22 +144,28 @@ def add_outfit_page(request):
         tags = request.POST.get('tags', '')
         image_data = request.POST.get('image')
 
+        # Pegando IDs com segurança
+        shirt_id = request.POST.get('shirt_id')
+        pants_id = request.POST.get('pants_id')
+        shoes_id = request.POST.get('shoes_id')
+
         if name and image_data:
             format, imgstr = image_data.split(';base64,') 
-            ext = format.split('/')[-1].split(';')[0] # Extração mais segura da extensão
+            ext = format.split('/')[-1].split(';')[0] 
             filename = f'{request.user.username}_outfit_{name}.{ext}'
             data = ContentFile(base64.b64decode(imgstr), name=filename)
             
-            # Cria o objeto PRIMEIRO, sem a imagem
+            # Blindagem: Só salva o ID se ele existir e não for a palavra "null"
             novo_outfit = Outfit(
                 user=request.user,
                 name=name,
-                tags=tags
+                tags=tags,
+                shirt_id=shirt_id if shirt_id and shirt_id != 'null' else None,
+                pants_id=pants_id if pants_id and pants_id != 'null' else None,
+                shoes_id=shoes_id if shoes_id and shoes_id != 'null' else None
             )
             
-            # Salva a imagem DEPOIS usando o método que força o envio para o Storage (Cloud)
             novo_outfit.image.save(filename, data, save=True)
-            
             return JsonResponse({'status': 'success'})
         return JsonResponse({'status': 'error', 'message': 'Faltam dados'})
 
@@ -193,6 +199,10 @@ def edit_outfit_page(request, outfit_id):
         tags = request.POST.get('tags', '')
         image_data = request.POST.get('image')
 
+        shirt_id = request.POST.get('shirt_id')
+        pants_id = request.POST.get('pants_id')
+        shoes_id = request.POST.get('shoes_id')
+
         if name and image_data:
             format, imgstr = image_data.split(';base64,')
             ext = format.split('/')[-1].split(';')[0]
@@ -201,10 +211,12 @@ def edit_outfit_page(request, outfit_id):
             
             outfit.name = name
             outfit.tags = tags
+            # Blindagem para a edição também
+            outfit.shirt_id = shirt_id if shirt_id and shirt_id != 'null' else None
+            outfit.pants_id = pants_id if pants_id and pants_id != 'null' else None
+            outfit.shoes_id = shoes_id if shoes_id and shoes_id != 'null' else None
             
-            # Salva a imagem usando o método que força o envio para o Storage (Cloud)
             outfit.image.save(filename, data, save=True)
-            
             return JsonResponse({'status': 'success'})
 
     pieces = Piece.objects.filter(user=request.user)

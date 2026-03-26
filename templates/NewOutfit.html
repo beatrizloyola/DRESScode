@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DRESScode. - Criar Look</title>
+  <title>DRESScode. - Novo Look</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{% static 'css/Style.css' %}" />
@@ -61,21 +61,19 @@
       <div class="completeArea">
         <a href="{% url 'dashboard' %}" class="btn btn-outline" id="back" style="text-decoration:none; text-align:center;">Cancelar</a>
         {% csrf_token %}
-        <button type="button" class="btn btn-primary" id="save">Salvar Look</button>
+        <button type="button" class="btn btn-primary" id="save">Salvar</button>
       </div>
     </div>
   </main>
 
   <script>
-    // Injetando as roupas que vieram do banco de dados (views.py)
     const shirtList = {{ shirts_json|safe }};
     const pantsList = {{ pants_json|safe }};
     const shoesList = {{ shoes_json|safe }};
-
+    
     let shirtLvl = 0;
     let pantsLvl = 0;
     let shoesLvl = 0;
-
     const tags = [];
     let buttonClicked = null;
     let animationHappening = false;
@@ -96,22 +94,16 @@
     const addTagBtn = document.getElementById('addTag');
     const saveBtn = document.getElementById('save');
 
-    /* ---------------------- */
-
     lookPreview.addEventListener('mousedown', (e) => e.preventDefault());
-
     shirtFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'shirt'));
     shirtBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'shirt'));
     pantsFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'pants'));
     pantsBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'pants'));
     shoesFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'shoes'));
     shoesBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'shoes'));
-
     nameInput.addEventListener('input', inputName);
     addTagBtn.addEventListener('click', addTag);
     saveBtn.addEventListener('click', saveLook);
-
-    /* --- Inicialização --- */
 
     const shirtHeight = getComputedStyle(shirtPreview).height;
     const pantsHeight = getComputedStyle(pantsPreview).height;
@@ -120,14 +112,10 @@
     changeLevel('shirt', shirtList, shirtLvl, shirtPreview, shirtHeight , 0);
     changeLevel('pants', pantsList, pantsLvl, pantsPreview, pantsHeight , 0);
     changeLevel('shoes', shoesList, shoesLvl, shoesPreview, shoesHeight , 0);
-    nameInput.value = '';
-
-    /* --- Parte do editor --- */
 
     function pressedArrow(e, modifier, category) {
         buttonClicked = e.currentTarget;
         e.currentTarget.style.transform = 'scale(0.5)';
-
         if (!animationHappening) {
             switch (category) {
                 case 'shirt': changeLevel(category, shirtList, shirtLvl, shirtPreview, shirtHeight, modifier); break;
@@ -149,19 +137,15 @@
             preview.innerHTML = '<span style="color:#aaa; font-size:12px;">Sem peças</span>';
             return;
         }
-
         lvl += modifier;
         if (lvl < 0) lvl = list.length - 1;
         if (lvl >= list.length) lvl = 0;
-
         switch (category) {
             case 'shirt': shirtLvl = lvl; break;
             case 'pants': pantsLvl = lvl; break;
             case 'shoes': shoesLvl = lvl; break;
         }
-
         const currentImg = preview.querySelector('img');
-
         if (currentImg) {
             changeImage(currentImg, modifier, list, lvl, preview, height);
         } else {
@@ -174,20 +158,14 @@
         switch (modifier) {
             case 1: image.classList.add('animateOutToLeft'); break;
             case -1: image.classList.add('animateOutToRight'); break;
-            default: 
-                image.remove();
-                addPiece(list, lvl, preview, height);
-                return;
+            default: image.remove(); addPiece(list, lvl, preview, height); return;
         }
         animationHappening = true;
-
         image.addEventListener('animationend', (e) => {
             e.currentTarget.classList.remove('animateOutToLeft', 'animateOutToRight');
             e.currentTarget.remove();
-
             const newPiece = addPiece(list, lvl, preview, height);
             addInAnimation(newPiece, modifier);
-            
             animationHappening = false;
         }, {once: true});
     }
@@ -198,7 +176,6 @@
         newPiece.src = list[lvl].image;
         newPiece.alt = list[lvl].alt;
         newPiece.style.height = height;
-        // Fix para o html2canvas conseguir renderizar a imagem sem problemas de CORS
         newPiece.crossOrigin = "anonymous"; 
         preview.appendChild(newPiece);
         return newPiece;
@@ -211,14 +188,11 @@
             case -1: image.classList.add('animateInToRight'); break;
         }
         animationHappening = true;
-
         image.addEventListener('animationend', (e) => {
             e.currentTarget.classList.remove('animateInToLeft', 'animateInToRight');
             animationHappening = false;
         }, {once: true});
     }
-
-    /* --- Parte das informações --- */
 
     function inputName() {
         if (noNameError) {
@@ -231,7 +205,6 @@
         const newTagText = prompt("Digite o nome da tag:");
         if (newTagText && newTagText.trim() !== '') {
             const cleanTag = newTagText.trim();
-
             if (!tags.includes(cleanTag)) {
                 tags.push(cleanTag);
                 renderTag(cleanTag);
@@ -240,70 +213,68 @@
     }
 
     function renderTag(tagText) {
-    const tagElement = document.createElement('div');
-    // REMOVIDO: clickable-tag (não é mais necessária se usarmos o :not no CSS)
-    tagElement.className = 'tag'; 
-    tagElement.textContent = tagText;
-    tagElement.title = "Clique para remover";
+        const tagElement = document.createElement('div');
+        tagElement.className = 'tag'; 
+        tagElement.textContent = tagText;
+        tagElement.title = "Clique para remover";
 
-    tagElement.addEventListener('click', function() {
-        const index = tags.indexOf(tagText);
-        if (index > -1) {
-            tags.splice(index, 1);
-        }
-        tagElement.remove();
-    });
-
-    // Insere sempre ANTES do botão de adicionar
-    document.getElementById('tagList').insertBefore(tagElement, addTagBtn);
-}
-
-
-    function saveLook() {
-    if (nameInput.value.trim() === '' && !noNameError) {
-        noNameMsg.textContent = 'Adicione um nome para o seu look.';
-        noNameError = true;
-        return;
+        tagElement.addEventListener('click', function() {
+            const index = tags.indexOf(tagText);
+            if (index > -1) {
+                tags.splice(index, 1);
+            }
+            tagElement.remove();
+        });
+        document.getElementById('tagList').insertBefore(tagElement, addTagBtn);
     }
 
-    // 1. Seleciona as setas e a própria div de preview
-    const arrows = document.querySelectorAll('.arrowBack, .arrowFoward');
-    const originalBg = lookPreview.style.backgroundColor; // Guarda o fundo original
+    function saveLook() {
+        if (nameInput.value.trim() === '' && !noNameError) {
+            noNameMsg.textContent = 'Adicione um nome para o seu look.';
+            noNameError = true;
+            return;
+        }
 
-    // 2. Esconde as setas e FORÇA o fundo a ser transparente para o print
-    arrows.forEach(arrow => arrow.style.visibility = 'hidden');
-    lookPreview.style.backgroundColor = 'transparent'; 
+        const arrows = document.querySelectorAll('.arrowBack, .arrowFoward');
+        const originalBg = lookPreview.style.backgroundColor;
 
-    html2canvas(lookPreview, {
-        useCORS: true, 
-        backgroundColor: null // Garante que o canvas não pinte um fundo
-    }).then(canvas => {
-        // 3. Restaura a interface original
-        arrows.forEach(arrow => arrow.style.visibility = 'visible');
-        lookPreview.style.backgroundColor = originalBg;
+        arrows.forEach(arrow => arrow.style.visibility = 'hidden');
+        lookPreview.style.backgroundColor = 'transparent';
 
-        const base64Image = canvas.toDataURL('image/png');
-        
-        const formData = new FormData();
-        formData.append('name', nameInput.value.trim());
-        formData.append('tags', tags.join(', '));
-        formData.append('image', base64Image);
-        
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        
-        fetch("{% url 'add_outfit' %}", {
-            method: 'POST',
-            headers: { 'X-CSRFToken': csrfToken },
-            body: formData
-        }).then(response => {
-            if(response.ok) {
-                window.location.href = "{% url 'dashboard' %}";
-            } else {
-                alert("Erro ao salvar o look.");
-            }
+        html2canvas(lookPreview, {
+            useCORS: true, 
+            backgroundColor: null
+        }).then(canvas => {
+            arrows.forEach(arrow => arrow.style.visibility = 'visible');
+            lookPreview.style.backgroundColor = originalBg;
+
+            const base64Image = canvas.toDataURL('image/png');
+            
+            const formData = new FormData();
+            formData.append('name', nameInput.value.trim());
+            formData.append('tags', tags.join(', '));
+            formData.append('image', base64Image);
+            
+            // ESSA É A MÁGICA QUE FALTAVA NA CRIAÇÃO!
+            if (shirtList.length > 0) formData.append('shirt_id', shirtList[shirtLvl].id);
+            if (pantsList.length > 0) formData.append('pants_id', pantsList[pantsLvl].id);
+            if (shoesList.length > 0) formData.append('shoes_id', shoesList[shoesLvl].id);
+            
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            fetch("{% url 'add_outfit' %}", {
+                method: 'POST',
+                headers: { 'X-CSRFToken': csrfToken },
+                body: formData
+            }).then(response => {
+                if(response.ok) {
+                    window.location.href = "{% url 'dashboard' %}";
+                } else {
+                    alert("Erro ao salvar o look.");
+                }
+            });
         });
-    });
-}
+    }
   </script>
 </body>
 </html>
