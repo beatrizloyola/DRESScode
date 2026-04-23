@@ -17,7 +17,7 @@ O DRESScode surge com o objetivo de permitir ao usuário visualizar, organizar e
 A aplicação apresenta grande enfoque no público jovem, considerando que a integração entre moda e tecnologia tem se mostrado cada vez mais relevante e em ascensão. Porém a aplicação se mostra aberta simultaneamente a um público amplo, atendendo a diferentes perfis. 
 
 ## Tecnologias Utilizadas:
-[![Python](https://img.shields.io/badge/Python-fff?style=for-the-badge&logo=python&logoColor=black)](#) [![Django](https://img.shields.io/badge/Django-fff?style=for-the-badge&logo=django&logoColor=black)](#) [![Postgres](https://img.shields.io/badge/Postgres-fff.svg?style=for-the-badge&logo=postgresql&logoColor=black)](#) [![JavaScript](https://img.shields.io/badge/JavaScript-fff?style=for-the-badge&logo=javascript&logoColor=000)](#)[![HTML](https://img.shields.io/badge/HTML-fff?style=for-the-badge&logo=html5&logoColor=000)](#) [![CSS](https://img.shields.io/badge/CSS-fff?style=for-the-badge&logo=css&logoColor=000)](#)
+[![Python](https://img.shields.io/badge/Python-fff?style=for-the-badge&logo=python&logoColor=black)](#) [![Django](https://img.shields.io/badge/Django-fff?style=for-the-badge&logo=django&logoColor=black)](#) [![Postgres](https://img.shields.io/badge/Postgres-fff.svg?style=for-the-badge&logo=postgresql&logoColor=black)](#) [![JavaScript](https://img.shields.io/badge/JavaScript-fff?style=for-the-badge&logo=javascript&logoColor=000)](#) [![HTML](https://img.shields.io/badge/HTML-fff?style=for-the-badge&logo=html5&logoColor=000)](#) [![CSS](https://img.shields.io/badge/CSS-fff?style=for-the-badge&logo=css&logoColor=000)](#)
 
 ## Licença
 
