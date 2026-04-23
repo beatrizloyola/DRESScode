@@ -18,3 +18,9 @@ A aplicação apresenta grande enfoque no público jovem, considerando que a int
 
 ## Tecnologias Utilizadas:
 [![Python](https://img.shields.io/badge/Python-fff?style=for-the-badge&logo=python&logoColor=black)](#) [![Django](https://img.shields.io/badge/Django-fff?style=for-the-badge&logo=django&logoColor=black)](#) [![Postgres](https://img.shields.io/badge/Postgres-fff.svg?style=for-the-badge&logo=postgresql&logoColor=black)](#) [![JavaScript](https://img.shields.io/badge/JavaScript-fff?style=for-the-badge&logo=javascript&logoColor=000)](#)[![HTML](https://img.shields.io/badge/HTML-fff?style=for-the-badge&logo=html5&logoColor=000)](#) [![CSS](https://img.shields.io/badge/CSS-fff?style=for-the-badge&logo=css&logoColor=000)](#)
+
+## Licença
+
+DRESSCode é licenciado com GNU GPL v3.O.
+
+Isso significa que você é livre para usar, modificar e distribuir esse software, incluindo para propósitos comerciais. No entanto, quaisquer modificações distribuídas também devem ser licenciadas com GPL v3.0 e incluir o código fonte.
