@@ -21,6 +21,6 @@ A aplicação apresenta grande enfoque no público jovem, considerando que a int
 
 ## Licença
 
-DRESSCode é licenciado com GNU GPL v3.O.
+DRESSCode é licenciado com GNU GPL v3.0.
 
 Isso significa que você é livre para usar, modificar e distribuir esse software, incluindo para propósitos comerciais. No entanto, quaisquer modificações distribuídas também devem ser licenciadas com GPL v3.0 e incluir o código fonte.
