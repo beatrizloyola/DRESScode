@@ -84,6 +84,7 @@
     let shoesLvl = 0;
     const tags = [];
     let buttonClicked = null;
+    let releaseTimeout = null;
     let animationHappening = false;
     let noNameError = false;
 
@@ -138,12 +139,14 @@
             }
         }
 
-        setTimeout(releaseArrow, 120);
+        clearTimeout(releaseTimeout);
+        releaseTimeout = setTimeout(releaseArrow, 120);
     }
 
     function releaseArrow() {
         if(buttonClicked) buttonClicked.style.transform = 'scale(1)';
         buttonClicked = null;
+        releaseTimeout = null;
     }
 
     function changeLevel (category, list, lvl, preview, height, modifier) {
