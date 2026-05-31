@@ -11,8 +11,8 @@
 </head>
 <body>
 
-  <nav>
-    <a href="{% url 'dashboard' %}" class="brand-logo">
+  <nav aria-label="Menu principal">
+    <a href="{% url 'dashboard' %}" class="brand-logo" aria-label="Ir para o dashboard">
       <img src="{% static 'media/logo/Logo Horizontal.png' %}" alt="DRESScode Logo">
     </a>
     <div class="nav-landing">
@@ -31,7 +31,13 @@
         {% csrf_token %}
         
         <div class="card" style="margin: 0 auto 24px; width: 200px; cursor: default;">
-          <div class="card-image-box" style="background-image: url('{{ piece.image.url }}'); background-size: contain; background-color: #f9f9f9; aspect-ratio: 1/1; margin-bottom: 0;"></div>
+          <div class="card-image-box" style="background-color: #f9f9f9; aspect-ratio: 1/1; margin-bottom: 0; display: flex; align-items: center; justify-content: center;">
+            <img 
+              src="{{ piece.image.url }}" 
+              alt="Imagem da peça {{ piece.name }}" 
+              style="max-width: 100%; max-height: 100%; object-fit: contain;"
+            >
+          </div>
         </div>
 
         <div class="input-group">
