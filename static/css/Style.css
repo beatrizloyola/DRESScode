@@ -11,10 +11,10 @@
 
 :root {
   /* Cores */
-  --black: #ff0000;
+  --black: #111;
   --white: #fff;
-  --gray-light: #ffffff;
-  --gray-border: #ffffff;
+  --gray-light: #f4f4f4;
+  --gray-border: #e0e0e0;
   --danger: #d41313;
   
   /* Medidas */

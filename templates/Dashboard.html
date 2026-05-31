@@ -61,7 +61,7 @@
     <div class="outfit-grid">
       
       {% for outfit in outfits %}
-        <div class="card">
+        <article class="card">
           <div class="card-image-box" style="background-image: url('{{ outfit.image.url }}');">
             <div class="card-actions">
               <a href="{% url 'edit_outfit' outfit.id %}" class="action-btn edit-btn" title="Editar Outfit">
