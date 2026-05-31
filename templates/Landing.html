@@ -7,65 +7,80 @@
   <title>DRESScode. - Seu guarda-roupa virtual</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
-  
   <link rel="stylesheet" href="{% static 'css/Style.css' %}" />
 </head>
+
 <body>
 
-  <nav class="nav-landing">
+  <nav class="nav-landing" aria-label="Menu principal">
     <a href="{% url 'signup' %}" class="btn btn-primary">Registrar</a>
     <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
   </nav>
 
-  <section class="hero">
-    <div class="logo-wrap">
-      <img src="{% static 'media/logo/Logo Vertical.png' %}" alt="DRESScode. — Seu guarda-roupa virtual" />
-    </div>
-    <p class="tagline">Seu guarda-roupa virtual</p>
-  </section>
+  <main>
+    <section class="hero" aria-labelledby="titulo-principal">
+      <div class="logo-wrap">
+        <img 
+          src="{% static 'media/logo/Logo Vertical.png' %}" 
+          alt="Logo DRESScode." 
+        />
+      </div>
 
-  <div class="clothes-strip">
-    <div class="strip-track">
-      <img src="{% static 'media/blusas/blusa1.png' %}" alt="Blusa 1" />
-      <img src="{% static 'media/blusas/blusa2.png' %}" alt="Blusa 2" />
-      <img src="{% static 'media/blusas/blusa3.png' %}" alt="Blusa 3" />
-      <img src="{% static 'media/blusas/blusa4.png' %}" alt="Blusa 4" />
-      <img src="{% static 'media/blusas/blusa5.png' %}" alt="Blusa 5" />
-      <img src="{% static 'media/blusas/blusa6.png' %}" alt="Blusa 6" />
-      <img src="{% static 'media/blusas/blusa7.png' %}" alt="Blusa 7"/>
-      <img src="{% static 'media/blusas/blusa1.png' %}" alt="Blusa 1" />
-      <img src="{% static 'media/blusas/blusa2.png' %}" alt="Blusa 2"/>
-      <img src="{% static 'media/blusas/blusa3.png' %}" alt="Blusa 3" />
-      <img src="{% static 'media/blusas/blusa4.png' %}" alt="Blusa 4" />
-      <img src="{% static 'media/blusas/blusa5.png' %}" alt="Blusa 5" />
-      <img src="{% static 'media/blusas/blusa6.png' %}" alt="Blusa 6" />
-      <img src="{% static 'media/blusas/blusa7.png' %}" alt="Blusa 7"/>
-    </div>
-  </div>
+      <h1 id="titulo-principal" class="sr-only">
+        DRESScode. Seu guarda-roupa virtual
+      </h1>
 
-  <div class="clothes-strip pants-strip">
-    <div class="pants-track">
-      <img src="{% static 'media/calcas/calca1.png' %}" alt="Calça 1" />
-      <img src="{% static 'media/calcas/calca2.png' %}" alt="Calça 2" />
-      <img src="{% static 'media/calcas/calca3.png' %}" alt="Calça 3" />
-      <img src="{% static 'media/calcas/calca4.png' %}" alt="Calça 4" />
-      <img src="{% static 'media/calcas/calca5.png' %}" alt="Calça 5" />
-      <img src="{% static 'media/calcas/calca6.png' %}" alt="Calça 6" />
-      <img src="{% static 'media/calcas/calca7.png' %}" alt="Calça 7" />
-      <img src="{% static 'media/calcas/calca1.png' %}" alt="Calça 1" aria-hidden="true"/>
-      <img src="{% static 'media/calcas/calca2.png' %}" alt="Calça 2" aria-hidden="true" class="short" />
-      <img src="{% static 'media/calcas/calca3.png' %}" alt="Calça 3" aria-hidden="true"/>
-      <img src="{% static 'media/calcas/calca4.png' %}" alt="Calça 4" aria-hidden="true"/>
-      <img src="{% static 'media/calcas/calca5.png' %}" alt="Calça 5" aria-hidden="true"/>
-      <img src="{% static 'media/calcas/calca6.png' %}" alt="Calça 6" aria-hidden="true"/>
-      <img src="{% static 'media/calcas/calca7.png' %}" alt="Calça 7" aria-hidden="true" class="short"/>
-    </div>
-  </div>
+      <p class="tagline">Seu guarda-roupa virtual</p>
+    </section>
 
-  <footer>
+    <div class="clothes-strip" aria-hidden="true">
+      <div class="strip-track">
+        <img src="{% static 'media/blusas/blusa1.png' %}" alt="" />
+        <img src="{% static 'media/blusas/blusa2.png' %}" alt="" />
+        <img src="{% static 'media/blusas/blusa3.png' %}" alt="" />
+        <img src="{% static 'media/blusas/blusa4.png' %}" alt="" />
+        <img src="{% static 'media/blusas/blusa5.png' %}" alt="" />
+        <img src="{% static 'media/blusas/blusa6.png' %}" alt="" />
+        <img src="{% static 'media/blusas/blusa7.png' %}" alt="" />
+
+        <img src="{% static 'media/blusas/blusa1.png' %}" alt="" />
+        <img src="{% static 'media/blusas/blusa2.png' %}" alt="" />
+        <img src="{% static 'media/blusas/blusa3.png' %}" alt="" />
+        <img src="{% static 'media/blusas/blusa4.png' %}" alt="" />
+        <img src="{% static 'media/blusas/blusa5.png' %}" alt="" />
+        <img src="{% static 'media/blusas/blusa6.png' %}" alt="" />
+        <img src="{% static 'media/blusas/blusa7.png' %}" alt="" />
+      </div>
+    </div>
+
+    <div class="clothes-strip pants-strip" aria-hidden="true">
+      <div class="pants-track">
+        <img src="{% static 'media/calcas/calca1.png' %}" alt="" />
+        <img src="{% static 'media/calcas/calca2.png' %}" alt="" />
+        <img src="{% static 'media/calcas/calca3.png' %}" alt="" />
+        <img src="{% static 'media/calcas/calca4.png' %}" alt="" />
+        <img src="{% static 'media/calcas/calca5.png' %}" alt="" />
+        <img src="{% static 'media/calcas/calca6.png' %}" alt="" />
+        <img src="{% static 'media/calcas/calca7.png' %}" alt="" />
+
+        <img src="{% static 'media/calcas/calca1.png' %}" alt="" />
+        <img src="{% static 'media/calcas/calca2.png' %}" alt="" class="short" />
+        <img src="{% static 'media/calcas/calca3.png' %}" alt="" />
+        <img src="{% static 'media/calcas/calca4.png' %}" alt="" />
+        <img src="{% static 'media/calcas/calca5.png' %}" alt="" />
+        <img src="{% static 'media/calcas/calca6.png' %}" alt="" />
+        <img src="{% static 'media/calcas/calca7.png' %}" alt="" class="short" />
+      </div>
+    </div>
+  </main>
+
+  <footer aria-label="Informações do projeto">
     <span class="brand">DRESScode.</span>
+
     <ul class="integrantes">
-      <li><p>Ana Beatriz • Beatriz Loyola • Júlia Tenório • Gustavo Rezende • Matheus Lima • Rafael Carrilho • Pedro Bedor</p></li>
+      <li>
+        <p>Ana Beatriz • Beatriz Loyola • Júlia Tenório • Gustavo Rezende • Matheus Lima • Rafael Carrilho • Pedro Bedor</p>
+      </li>
     </ul>
   </footer>
 

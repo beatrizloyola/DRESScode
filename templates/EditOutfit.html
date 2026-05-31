@@ -25,45 +25,58 @@
   </nav>
 
   <main class="editor-content">
+  <h1 class="sr-only">Editar Outfit</h1>
     
     <div class="lookPreview" id="lookPreview" style="background-color: white;">
-      <div class="shirt editor-row">
-        <div class="arrowBack" id="shirtBack"></div>
-        <div class="preview" id="shirtPreview"></div>
-        <div class="arrowFoward" id="shirtFoward"></div>
-      </div>
+        <div class="shirt editor-row">
+            <button type="button" class="arrowBack" id="shirtBack" aria-label="Camisa anterior"></button>
+            <div class="preview" id="shirtPreview"></div>
+            <button type="button" class="arrowFoward" id="shirtFoward" aria-label="Próxima camisa"></button>
+        </div>
       <div class="pants editor-row">
-        <div class="arrowBack" id="pantsBack"></div>
+        <button type="button" class="arrowBack" id="pantsBack" aria-label="Calça anterior"></button>
         <div class="preview" id="pantsPreview"></div>
-        <div class="arrowFoward" id="pantsFoward"></div>
+        <button type="button" class="arrowFoward" id="pantsFoward" aria-label="Próxima calça"></button>
       </div>
       <div class="shoes editor-row">
-        <div class="arrowBack" id="shoesBack"></div>
+        <button type="button" class="arrowBack" id="shoesBack" aria-label="Sapato anterior"></button>
         <div class="preview" id="shoesPreview"></div>
-        <div class="arrowFoward" id="shoesFoward"></div>
+        <button type="button" class="arrowFoward" id="shoesFoward" aria-label="Próximo sapato"></button>
       </div>
     </div>
 
     <div class="lookInfo">
-      <div class="input-group">
+    <div class="input-group">
         <label for="nameInput">Nome do Outfit</label>
-        <input type="text" id="nameInput" maxlength="26" placeholder="Ex: Look de Verão">
-        <div id="noNameMsg" class="error-msg"></div>
-      </div>
+        <input 
+          type="text" 
+          id="nameInput" 
+          maxlength="26" 
+          placeholder="Ex: Look de Verão"
+          aria-describedby="noNameMsg"
+          aria-invalid="false"
+        >
 
-      <div class="tagArea input-group">
-        <label>Tags</label>
-        <div class="tagList" id="tagList">
-          <div class="tag add-tag-btn" id="addTag">+ Adicionar</div>
+        <div id="noNameMsg" class="error-msg" role="alert" aria-live="assertive"></div>
+    </div>
+
+        <div class="tagArea input-group">
+            <label>Tags</label>
+
+            <div class="tagList" id="tagList"></div>
+
+            <button type="button" class="tag add-tag-btn" id="addTag">
+            + Adicionar
+            </button>
         </div>
-      </div>
 
-      <div class="completeArea">
-        <a href="{% url 'dashboard' %}" class="btn btn-outline" id="back" style="text-decoration:none; text-align:center;">Cancelar</a>
+    <div class="completeArea">
+        <a href="{% url 'dashboard' %}" class="btn btn-outline">Cancelar</a>
         {% csrf_token %}
         <button type="button" class="btn btn-primary" id="save">Salvar</button>
-      </div>
     </div>
+  </div>
+
   </main>
 
   <script>
@@ -104,19 +117,23 @@
     const shoesPreview = document.getElementById('shoesPreview');
     const nameInput = document.getElementById('nameInput');
     const noNameMsg = document.getElementById('noNameMsg');
+    
     const addTagBtn = document.getElementById('addTag');
+
+    if (addTagBtn) {
+        addTagBtn.addEventListener('click', addTag);
+    }
+
     const saveBtn = document.getElementById('save');
 
-    lookPreview.addEventListener('mousedown', (e) => e.preventDefault());
-    shirtFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'shirt'));
-    shirtBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'shirt'));
-    pantsFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'pants'));
-    pantsBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'pants'));
-    shoesFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'shoes'));
-    shoesBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'shoes'));
+    shirtFoward.addEventListener('click', (e) => pressedArrow(e, 1, 'shirt'));
+    shirtBack.addEventListener('click', (e) => pressedArrow(e, -1, 'shirt'));
+    pantsFoward.addEventListener('click', (e) => pressedArrow(e, 1, 'pants'));
+    pantsBack.addEventListener('click', (e) => pressedArrow(e, -1, 'pants'));
+    shoesFoward.addEventListener('click', (e) => pressedArrow(e, 1, 'shoes'));
+    shoesBack.addEventListener('click', (e) => pressedArrow(e, -1, 'shoes'));
 
     nameInput.addEventListener('input', inputName);
-    addTagBtn.addEventListener('click', addTag);
     saveBtn.addEventListener('click', saveLook);
 
     const shirtHeight = getComputedStyle(shirtPreview).height;
@@ -137,20 +154,27 @@
     function pressedArrow(e, modifier, category) {
         buttonClicked = e.currentTarget;
         e.currentTarget.style.transform = 'scale(0.5)';
+
         if (!animationHappening) {
             switch (category) {
-                case 'shirt': changeLevel(category, shirtList, shirtLvl, shirtPreview, shirtHeight, modifier); break;
-                case 'pants': changeLevel(category, pantsList, pantsLvl, pantsPreview, pantsHeight, modifier); break;
-                case 'shoes': changeLevel(category, shoesList, shoesLvl, shoesPreview, shoesHeight, modifier); break;
+                case 'shirt':
+                    changeLevel(category, shirtList, shirtLvl, shirtPreview, shirtHeight, modifier);
+                    break;
+                case 'pants':
+                    changeLevel(category, pantsList, pantsLvl, pantsPreview, pantsHeight, modifier);
+                    break;
+                case 'shoes':
+                    changeLevel(category, shoesList, shoesLvl, shoesPreview, shoesHeight, modifier);
+                    break;
             }
         }
-        document.addEventListener('mouseup', releaseArrow);
+
+        setTimeout(releaseArrow, 120);
     }
 
     function releaseArrow() {
         if(buttonClicked) buttonClicked.style.transform = 'scale(1)';
         buttonClicked = null;
-        document.removeEventListener('mouseup', releaseArrow);
     }
 
     function changeLevel (category, list, lvl, preview, height, modifier) {
@@ -194,8 +218,9 @@
     function addPiece(list, lvl, preview, height) {
         if (list.length === 0) return;
         const newPiece = document.createElement('img');
+        newPiece.crossOrigin = "anonymous";
         newPiece.src = list[lvl].image;
-        newPiece.alt = list[lvl].alt;
+        newPiece.alt = list[lvl].alt || "Peça de roupa selecionada";
         
         // --- A NOVA LÓGICA DE TAMANHO ---
         newPiece.style.maxHeight = height; // A imagem pode ser menor, mas nunca maior que a caixa
@@ -213,7 +238,6 @@
         }
         // ---------------------------------
         
-        newPiece.style.crossOrigin = "anonymous"; 
         preview.appendChild(newPiece);
         return newPiece;
     }
@@ -234,6 +258,7 @@
     function inputName() {
         if (noNameError) {
             noNameMsg.textContent = '';
+            nameInput.setAttribute('aria-invalid', 'false');
             noNameError = false;
         }
     }
@@ -250,12 +275,16 @@
     }
 
     function renderTag(tagText) {
-        const tagElement = document.createElement('div');
-        tagElement.className = 'tag'; 
+        const tagList = document.getElementById('tagList');
+        if (!tagList) return;
+
+        const tagElement = document.createElement('button');
+        tagElement.type = 'button';
+        tagElement.className = 'tag';
         tagElement.textContent = tagText;
         tagElement.title = "Clique para remover";
 
-        tagElement.addEventListener('click', function() {
+        tagElement.addEventListener('click', function () {
             const index = tags.indexOf(tagText);
             if (index > -1) {
                 tags.splice(index, 1);
@@ -263,15 +292,17 @@
             tagElement.remove();
         });
 
-        document.getElementById('tagList').insertBefore(tagElement, addTagBtn);
+        tagList.appendChild(tagElement);
     }
 
     function saveLook() {
-        if (nameInput.value.trim() === '' && !noNameError) {
-            noNameMsg.textContent = 'Adicione um nome para o seu look.';
-            noNameError = true;
-            return;
-        }
+    if (nameInput.value.trim() === '') {
+        noNameMsg.textContent = 'Adicione um nome para o seu look.';
+        nameInput.setAttribute('aria-invalid', 'true');
+        noNameError = true;
+        nameInput.focus();
+        return;
+    }
 
         const arrows = document.querySelectorAll('.arrowBack, .arrowFoward');
         const originalBg = lookPreview.style.backgroundColor;

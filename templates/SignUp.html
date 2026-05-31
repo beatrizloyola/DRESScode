@@ -7,48 +7,86 @@
   <title>DRESScode. - Registrar</title>
   
   <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Expanded:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
-  
   <link rel="stylesheet" href="{% static 'css/Style.css' %}" />
 </head>
 <body>
 
-  <nav>
-    <a href="{% url 'landing' %}" class="brand-logo">
-      <img src="{% static 'media/logo/Logo Horizontal.png' %}" alt="Logo DRESScode">
+  <nav aria-label="Menu principal">
+    <a href="{% url 'landing' %}" class="brand-logo" aria-label="Ir para a página inicial">
+      <img src="{% static 'media/logo/Logo Horizontal.png' %}" alt="DRESScode">
     </a>
+
     <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
   </nav>
 
   <main class="auth-content">
     <div class="auth-box">
-      <h2>Crie sua conta!</h2>
-      <p>Comece a organizar seu guarda-roupa virtual.</p>
+      <h1>Crie sua conta!</h1>
+
+      <p id="register-description">
+        Comece a organizar seu guarda-roupa virtual.
+      </p>
 
       {% if error %}
-        <p style="color: red; text-align: center; margin-bottom: 15px; font-weight: bold;">{{ error }}</p>
+        <p 
+          class="error-msg"
+          role="alert"
+          aria-live="assertive"
+          style="text-align: center; margin-bottom: 15px; font-weight: bold;"
+        >
+          {{ error }}
+        </p>
       {% endif %}
 
-      <form method="POST" action="">
+      <form method="POST" action="" aria-describedby="register-description">
         {% csrf_token %}
         
         <div class="input-group">
           <label for="name">Nome</label>
-          <input type="text" id="name" name="name" placeholder="Seu nome" required>
+          <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            placeholder="Seu nome" 
+            required
+            autocomplete="name"
+          >
         </div>
 
         <div class="input-group">
           <label for="email">E-mail</label>
-          <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            placeholder="seu@email.com" 
+            required
+            autocomplete="email"
+          >
         </div>
 
         <div class="input-group">
           <label for="password">Senha</label>
-          <input type="password" id="password" name="password" placeholder="Crie uma senha forte" required>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            placeholder="Crie uma senha forte" 
+            required
+            autocomplete="new-password"
+          >
         </div>
 
         <div class="input-group">
           <label for="confirm-password">Confirmar senha</label>
-          <input type="password" id="confirm-password" name="confirm_password" placeholder="Repita sua senha" required>
+          <input 
+            type="password" 
+            id="confirm-password" 
+            name="confirm_password" 
+            placeholder="Repita sua senha" 
+            required
+            autocomplete="new-password"
+          >
         </div>
 
         <button type="submit" class="btn btn-primary btn-full">Registrar</button>
@@ -56,7 +94,7 @@
     </div>
   </main>
 
-  <footer>
+  <footer aria-label="Informações do projeto">
     <span class="brand">DRESScode.</span>
     <ul class="integrantes">
       <li><p>Ana Beatriz • Beatriz Loyola • Júlia Tenório • Gustavo Rezende • Matheus Lima • Rafael Carrilho • Pedro Bedor</p></li>
