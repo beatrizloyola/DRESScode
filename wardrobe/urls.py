@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
@@ -15,4 +16,21 @@ urlpatterns = [
     path('excluir-outfit/<int:outfit_id>/', views.delete_outfit, name='delete_outfit'),
     path('outfits/edit/<int:outfit_id>/', views.edit_outfit_page, name='edit_outfit'),
     path('conta/', views.my_account, name='my_account'),
+
+    path('recuperar-senha/', auth_views.PasswordResetView.as_view(
+        template_name='PasswordResetForm.html',
+        email_template_name='emails/password_reset_email.html',
+        subject_template_name='emails/password_reset_subject.txt',
+        success_url='/recuperar-senha/enviado/',
+    ), name='password_reset'),
+    path('recuperar-senha/enviado/', auth_views.PasswordResetDoneView.as_view(
+        template_name='PasswordResetDone.html',
+    ), name='password_reset_done'),
+    path('recuperar-senha/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
+        template_name='PasswordResetConfirm.html',
+        success_url='/recuperar-senha/concluido/',
+    ), name='password_reset_confirm'),
+    path('recuperar-senha/concluido/', auth_views.PasswordResetCompleteView.as_view(
+        template_name='PasswordResetComplete.html',
+    ), name='password_reset_complete'),
 ]
