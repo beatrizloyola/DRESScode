@@ -13,9 +13,9 @@
 </head>
 <body>
 
-  <nav>
-    <a href="{% url 'dashboard' %}" class="brand-logo">
-      <img src="{% static 'media/logo/Logo Horizontal.png' %}" alt="DRESScode Logo">
+  <nav aria-label="Menu principal">
+    <a href="{% url 'dashboard' %}" class="brand-logo" aria-label="Ir para o dashboard">
+      <img src="{% static 'media/logo/Logo Horizontal.png' %}" alt="DRESScode">
     </a>
     <div class="nav-landing">
         <a href="{% url 'my_pieces' %}" class="btn btn-outline">Gerenciar Peças</a>
@@ -25,36 +25,44 @@
   </nav>
 
   <main class="editor-content">
+    <h1 class="sr-only">Criar novo outfit</h1>
     
-    <div class="lookPreview" id="lookPreview" style="background-color: white;">
+    <div class="lookPreview" id="lookPreview" style="background-color: white;" aria-label="Pré-visualização do outfit">
       <div class="shirt editor-row">
-        <div class="arrowBack" id="shirtBack"></div>
+        <button type="button" class="arrowBack" id="shirtBack" aria-label="Camisa anterior"></button>
         <div class="preview" id="shirtPreview"></div>
-        <div class="arrowFoward" id="shirtFoward"></div>
+        <button type="button" class="arrowFoward" id="shirtFoward" aria-label="Próxima camisa"></button>
       </div>
       <div class="pants editor-row">
-        <div class="arrowBack" id="pantsBack"></div>
+        <button type="button" class="arrowBack" id="pantsBack" aria-label="Calça anterior"></button>
         <div class="preview" id="pantsPreview"></div>
-        <div class="arrowFoward" id="pantsFoward"></div>
+        <button type="button" class="arrowFoward" id="pantsFoward" aria-label="Próxima calça"></button>
       </div>
       <div class="shoes editor-row">
-        <div class="arrowBack" id="shoesBack"></div>
+        <button type="button" class="arrowBack" id="shoesBack" aria-label="Sapato anterior"></button>
         <div class="preview" id="shoesPreview"></div>
-        <div class="arrowFoward" id="shoesFoward"></div>
+        <button type="button" class="arrowFoward" id="shoesFoward" aria-label="Próximo sapato"></button>
       </div>
     </div>
 
     <div class="lookInfo">
       <div class="input-group">
         <label for="nameInput">Nome do Outfit</label>
-        <input type="text" id="nameInput" maxlength="26" placeholder="Ex: Look de Verão">
-        <div id="noNameMsg" class="error-msg"></div>
+        <input 
+          type="text" 
+          id="nameInput" 
+          maxlength="26" 
+          placeholder="Ex: Look de Verão"
+          aria-describedby="noNameMsg"
+          aria-invalid="false"
+        >
+        <div id="noNameMsg" class="error-msg" role="alert" aria-live="assertive"></div>
       </div>
 
       <div class="tagArea input-group">
-        <label>Tags</label>
+        <p>Tags</p>
         <div class="tagList" id="tagList">
-          <div class="tag add-tag-btn" id="addTag">+ Adicionar</div>
+          <button type="button" class="tag add-tag-btn" id="addTag">+ Adicionar</button>
         </div>
       </div>
 
@@ -94,13 +102,12 @@
     const addTagBtn = document.getElementById('addTag');
     const saveBtn = document.getElementById('save');
 
-    lookPreview.addEventListener('mousedown', (e) => e.preventDefault());
-    shirtFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'shirt'));
-    shirtBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'shirt'));
-    pantsFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'pants'));
-    pantsBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'pants'));
-    shoesFoward.addEventListener('mousedown', (e) => pressedArrow(e, 1, 'shoes'));
-    shoesBack.addEventListener('mousedown', (e) => pressedArrow(e, -1, 'shoes'));
+    shirtFoward.addEventListener('click', (e) => pressedArrow(e, 1, 'shirt'));
+    shirtBack.addEventListener('click', (e) => pressedArrow(e, -1, 'shirt'));
+    pantsFoward.addEventListener('click', (e) => pressedArrow(e, 1, 'pants'));
+    pantsBack.addEventListener('click', (e) => pressedArrow(e, -1, 'pants'));
+    shoesFoward.addEventListener('click', (e) => pressedArrow(e, 1, 'shoes'));
+    shoesBack.addEventListener('click', (e) => pressedArrow(e, -1, 'shoes'));
     nameInput.addEventListener('input', inputName);
     addTagBtn.addEventListener('click', addTag);
     saveBtn.addEventListener('click', saveLook);
@@ -116,36 +123,48 @@
     function pressedArrow(e, modifier, category) {
         buttonClicked = e.currentTarget;
         e.currentTarget.style.transform = 'scale(0.5)';
+
         if (!animationHappening) {
             switch (category) {
-                case 'shirt': changeLevel(category, shirtList, shirtLvl, shirtPreview, shirtHeight, modifier); break;
-                case 'pants': changeLevel(category, pantsList, pantsLvl, pantsPreview, pantsHeight, modifier); break;
-                case 'shoes': changeLevel(category, shoesList, shoesLvl, shoesPreview, shoesHeight, modifier); break;
+                case 'shirt':
+                    changeLevel(category, shirtList, shirtLvl, shirtPreview, shirtHeight, modifier);
+                    break;
+                case 'pants':
+                    changeLevel(category, pantsList, pantsLvl, pantsPreview, pantsHeight, modifier);
+                    break;
+                case 'shoes':
+                    changeLevel(category, shoesList, shoesLvl, shoesPreview, shoesHeight, modifier);
+                    break;
             }
         }
-        document.addEventListener('mouseup', releaseArrow);
+
+        setTimeout(releaseArrow, 120);
     }
 
     function releaseArrow() {
         if(buttonClicked) buttonClicked.style.transform = 'scale(1)';
         buttonClicked = null;
-        document.removeEventListener('mouseup', releaseArrow);
     }
 
     function changeLevel (category, list, lvl, preview, height, modifier) {
         if (list.length === 0) {
-            preview.innerHTML = '<span style="color:#aaa; font-size:12px;">Sem peças</span>';
+            preview.innerHTML = '<span style="color:#555; font-size:12px;">Sem peças</span>';
             return;
         }
+
         lvl += modifier;
+
         if (lvl < 0) lvl = list.length - 1;
         if (lvl >= list.length) lvl = 0;
+
         switch (category) {
             case 'shirt': shirtLvl = lvl; break;
             case 'pants': pantsLvl = lvl; break;
             case 'shoes': shoesLvl = lvl; break;
         }
+
         const currentImg = preview.querySelector('img');
+
         if (currentImg) {
             changeImage(currentImg, modifier, list, lvl, preview, height);
         } else {
@@ -160,50 +179,57 @@
             case -1: image.classList.add('animateOutToRight'); break;
             default: image.remove(); addPiece(list, lvl, preview, height); return;
         }
+
         animationHappening = true;
+
         image.addEventListener('animationend', (e) => {
             e.currentTarget.classList.remove('animateOutToLeft', 'animateOutToRight');
             e.currentTarget.remove();
+
             const newPiece = addPiece(list, lvl, preview, height);
             addInAnimation(newPiece, modifier);
+
             animationHappening = false;
         }, {once: true});
     }
 
     function addPiece(list, lvl, preview, height) {
         if (list.length === 0) return;
+
         const newPiece = document.createElement('img');
+
+        newPiece.crossOrigin = "anonymous";
         newPiece.src = list[lvl].image;
-        newPiece.alt = list[lvl].alt;
+        newPiece.alt = list[lvl].alt || "Peça de roupa selecionada";
         
-        // --- A NOVA LÓGICA DE TAMANHO ---
-        newPiece.style.maxHeight = height; // A imagem pode ser menor, mas nunca maior que a caixa
+        newPiece.style.maxHeight = height;
         newPiece.style.maxWidth = '180px';
-        newPiece.style.width = 'auto'; // A largura se ajusta automaticamente
-        newPiece.style.objectFit = 'contain'; // Mantém as proporções reais da peça
+        newPiece.style.width = 'auto';
+        newPiece.style.objectFit = 'contain';
         
-        // Dica de Ouro: Se for a parte de baixo (calça/saia), alinha no topo para grudar na blusa!
         if (list === pantsList) {
              newPiece.style.objectPosition = 'top center';
         } else if (list === shoesList) {
-             newPiece.style.objectPosition = 'top center'; // Sapatos grudam no final da perna
+             newPiece.style.objectPosition = 'top center';
         } else {
-             newPiece.style.objectPosition = 'bottom center'; // Blusas grudam na cintura
+             newPiece.style.objectPosition = 'bottom center';
         }
-        // ---------------------------------
         
-        newPiece.style.crossOrigin = "anonymous"; 
         preview.appendChild(newPiece);
+
         return newPiece;
     }
 
     function addInAnimation(image, modifier) {
         if(!image) return;
+
         switch (modifier) {
             case 1: image.classList.add('animateInToLeft'); break;
             case -1: image.classList.add('animateInToRight'); break;
         }
+
         animationHappening = true;
+
         image.addEventListener('animationend', (e) => {
             e.currentTarget.classList.remove('animateInToLeft', 'animateInToRight');
             animationHappening = false;
@@ -213,14 +239,17 @@
     function inputName() {
         if (noNameError) {
             noNameMsg.textContent = '';
+            nameInput.setAttribute('aria-invalid', 'false');
             noNameError = false;
         }
     }
 
     function addTag() {
         const newTagText = prompt("Digite o nome da tag:");
+
         if (newTagText && newTagText.trim() !== '') {
             const cleanTag = newTagText.trim();
+
             if (!tags.includes(cleanTag)) {
                 tags.push(cleanTag);
                 renderTag(cleanTag);
@@ -229,25 +258,33 @@
     }
 
     function renderTag(tagText) {
-        const tagElement = document.createElement('div');
+        const tagElement = document.createElement('button');
+
+        tagElement.type = 'button';
         tagElement.className = 'tag'; 
         tagElement.textContent = tagText;
         tagElement.title = "Clique para remover";
+        tagElement.setAttribute('aria-label', `Remover tag ${tagText}`);
 
         tagElement.addEventListener('click', function() {
             const index = tags.indexOf(tagText);
+
             if (index > -1) {
                 tags.splice(index, 1);
             }
+
             tagElement.remove();
         });
+
         document.getElementById('tagList').insertBefore(tagElement, addTagBtn);
     }
 
     function saveLook() {
-        if (nameInput.value.trim() === '' && !noNameError) {
+        if (nameInput.value.trim() === '') {
             noNameMsg.textContent = 'Adicione um nome para o seu look.';
+            nameInput.setAttribute('aria-invalid', 'true');
             noNameError = true;
+            nameInput.focus();
             return;
         }
 
@@ -267,11 +304,11 @@
             const base64Image = canvas.toDataURL('image/png');
             
             const formData = new FormData();
+
             formData.append('name', nameInput.value.trim());
             formData.append('tags', tags.join(', '));
             formData.append('image', base64Image);
             
-            // ESSA É A MÁGICA QUE FALTAVA NA CRIAÇÃO!
             if (shirtList.length > 0) formData.append('shirt_id', shirtList[shirtLvl].id);
             if (pantsList.length > 0) formData.append('pants_id', pantsList[pantsLvl].id);
             if (shoesList.length > 0) formData.append('shoes_id', shoesList[shoesLvl].id);
