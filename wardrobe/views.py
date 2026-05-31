@@ -34,6 +34,7 @@ def signup_page(request):
         )
         user.save()
 
+        messages.success(request, 'Conta criada com sucesso! Faça login para continuar.')
         return redirect('login')
 
     return render(request, 'SignUp.html')
