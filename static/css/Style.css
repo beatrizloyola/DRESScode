@@ -95,9 +95,9 @@ nav {
   align-items: center;
   gap: 12px;
   padding: 18px 40px;
-  background: rgba(255,255,255,0.92);
+  background: rgb(255, 255, 255);
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.14);
 }
 
 /* Modificador para a Landing Page (alinha botões à direita) */
@@ -137,7 +137,7 @@ nav.nav-landing {
   transform: translateY(-50%);
   width: 18px;
   height: 18px;
-  fill: #888;
+  fill: #939393;
   cursor: pointer;
 }
 
@@ -204,7 +204,7 @@ main.dashboard-content {
 }
 
 .card:hover .card-image-box {
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.261);
 }
 
 .card-title {
@@ -280,7 +280,7 @@ a.tag:hover {
     transition: all 0.2s ease;
     border: 1px solid var(--gray-border);
     background-color: var(--gray-light);
-    color: #666;
+    color: #5b5b5b;
     text-decoration: none;
     margin: 0; /* O gap já cuida do espaçamento */
     display: inline-flex;
@@ -347,7 +347,7 @@ a.tag:hover {
   font-size: clamp(13px, 2vw, 22px);
   font-weight: 300;
   letter-spacing: 0.04em;
-  color: #333;
+  color: #1a1a1a;
   margin-top: 4px;
 }
 
