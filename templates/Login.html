@@ -28,6 +28,19 @@
         Acesse o seu guarda-roupa virtual.
       </p>
 
+      {% if messages %}
+        {% for message in messages %}
+          <p
+            class="success-msg"
+            role="status"
+            aria-live="polite"
+            style="text-align: center; margin-bottom: 15px; font-weight: bold; color: #2e7d32;"
+          >
+            {{ message }}
+          </p>
+        {% endfor %}
+      {% endif %}
+
       {% if error %}
         <p 
           id="login-error" 
