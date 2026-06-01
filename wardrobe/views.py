@@ -122,7 +122,7 @@ def delete_piece(request, piece_id):
 
 @login_required(login_url='login')
 def my_pieces_page(request):
-    search_query = request.GET.get('q', '')
+    search_query = request.GET.get('q', '').strip()
     
     pieces = Piece.objects.filter(user=request.user)
     
@@ -133,7 +133,8 @@ def my_pieces_page(request):
         'shirts': pieces.filter(category='shirt'),
         'pants': pieces.filter(category='pants'),
         'shoes': pieces.filter(category='shoes'),
-        'search_query': search_query
+        'search_query': search_query,
+        'total_results': pieces.count(),
     }
     
     return render(request, 'MyPieces.html', context)
