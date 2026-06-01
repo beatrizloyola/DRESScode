@@ -124,7 +124,9 @@
             </div>
           </div>
         {% empty %}
-          {% if not search_query %}
+          {% if search_query %}
+            <p class="empty-message">Nenhuma peça nesta categoria para "{{ search_query }}".</p>
+          {% else %}
             <p class="empty-message">Você ainda não tem partes de cima.</p>
           {% endif %}
         {% endfor %}
@@ -176,7 +178,9 @@
             </div>
           </div>
         {% empty %}
-          {% if not search_query %}
+          {% if search_query %}
+            <p class="empty-message">Nenhuma peça nesta categoria para "{{ search_query }}".</p>
+          {% else %}
             <p class="empty-message">Você ainda não tem partes de baixo.</p>
           {% endif %}
         {% endfor %}
@@ -228,7 +232,9 @@
             </div>
           </div>
         {% empty %}
-          {% if not search_query %}
+          {% if search_query %}
+            <p class="empty-message">Nenhuma peça nesta categoria para "{{ search_query }}".</p>
+          {% else %}
             <p class="empty-message">Você ainda não tem sapatos.</p>
           {% endif %}
         {% endfor %}
