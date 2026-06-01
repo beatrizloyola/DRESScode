@@ -55,7 +55,30 @@
 
       <a href="{% url 'add_piece' %}" class="btn btn-primary">Adicionar Peça</a>
     </div>
+    {% if search_query %}
+      <div 
+        class="search-feedback {% if not total_results %}search-feedback-empty{% endif %}" 
+        role="status" 
+        aria-live="polite"
+      >
+        {% if total_results %}
+          <p>
+            Encontramos <strong>{{ total_results }}</strong>
+            resultado{{ total_results|pluralize }} para
+            <strong>"{{ search_query }}"</strong>.
+          </p>
+        {% else %}
+          <p>
+            Nenhuma peça encontrada para <strong>"{{ search_query }}"</strong>.
+          </p>
+          <span>
+            Tente buscar por outro nome ou confira se a peça foi cadastrada.
+          </span>
+        {% endif %}
 
+        <a href="{% url 'my_pieces' %}">Limpar busca</a>
+      </div>
+    {% endif %}
     <div class="category-section">
       <h2 class="category-title">Partes de Cima</h2>
 
@@ -101,7 +124,11 @@
             </div>
           </div>
         {% empty %}
-          <p style="color: #666; margin-top: 10px;">Você ainda não tem partes de cima.</p>
+          {% if search_query %}
+            <p class="empty-message">Nenhuma peça nesta categoria para "{{ search_query }}".</p>
+          {% else %}
+            <p class="empty-message">Você ainda não tem partes de cima.</p>
+          {% endif %}
         {% endfor %}
       </div>
     </div>
@@ -151,7 +178,11 @@
             </div>
           </div>
         {% empty %}
-          <p style="color: #666; margin-top: 10px;">Você ainda não tem partes de baixo.</p>
+          {% if search_query %}
+            <p class="empty-message">Nenhuma peça nesta categoria para "{{ search_query }}".</p>
+          {% else %}
+            <p class="empty-message">Você ainda não tem partes de baixo.</p>
+          {% endif %}
         {% endfor %}
       </div>
     </div>
@@ -201,7 +232,11 @@
             </div>
           </div>
         {% empty %}
-          <p style="color: #666; margin-top: 10px;">Você ainda não tem sapatos.</p>
+          {% if search_query %}
+            <p class="empty-message">Nenhuma peça nesta categoria para "{{ search_query }}".</p>
+          {% else %}
+            <p class="empty-message">Você ainda não tem sapatos.</p>
+          {% endif %}
         {% endfor %}
       </div>
     </div>
