@@ -15,6 +15,7 @@
   --white: #fff;
   --gray-light: #f4f4f4;
   --gray-border: #e0e0e0;
+  --gray-text: #666;
   --danger: #d41313;
   
   /* Medidas */
@@ -223,7 +224,7 @@ main.dashboard-content {
 
 .tag {
   background-color: var(--gray-light);
-  color: #666;
+  color: var(--gray-text);
   font-size: 11px;
   padding: 4px 12px;
   border-radius: 20px;
@@ -528,7 +529,7 @@ footer .integrantes p {
 }
 
 .auth-box p {
-  color: #666;
+  color: var(--gray-text);
   font-size: 14px;
   margin-bottom: 32px;
 }
@@ -570,7 +571,7 @@ footer .integrantes p {
   display: block;
   text-align: right;
   font-size: 13px;
-  color: #666;
+  color: var(--gray-text);
   text-decoration: none;
   margin-bottom: 24px;
   transition: color 0.2s;
@@ -761,7 +762,7 @@ footer .integrantes p {
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  color: #666;
+  color: var(--gray-text);
   font-size: 14px;
   cursor: pointer;
   width: 100%;
@@ -837,7 +838,7 @@ footer .integrantes p {
 }
 
 .settings-header p {
-  color: #666;
+  color: var(--gray-text);
   font-size: 14px;
   text-align: center;
 }
@@ -900,7 +901,7 @@ footer .integrantes p {
 }
 
 .page-header p {
-  color: #666;
+  color: var(--gray-text);
   font-size: 15px;
 }
 
@@ -1081,4 +1082,48 @@ footer .integrantes p {
   align-items: center;
   margin-top: 40px;
   gap: 20px; /* Garante que não grudem em telas menores */
+}
+
+/* Search feedback */
+.search-feedback {
+  width: 100%;
+  margin: -12px 0 32px;
+  padding: 18px 22px;
+  border: 1px solid var(--gray-border);
+  border-radius: 18px;
+  background-color: var(--gray-light);
+  color: var(--black);
+}
+
+.search-feedback p {
+  margin-bottom: 6px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.search-feedback span {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--gray-text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.search-feedback a {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--black);
+  text-decoration: underline;
+}
+
+.search-feedback-empty {
+  border-style: dashed;
+}
+
+.empty-message {
+  color: var(--gray-text);
+  margin-top: 10px;
+  font-size: 14px;
 }
