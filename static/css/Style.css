@@ -1082,3 +1082,47 @@ footer .integrantes p {
   margin-top: 40px;
   gap: 20px; /* Garante que não grudem em telas menores */
 }
+
+/* Aqui estão as melhorarias de feedback na busca! */
+.search-feedback {
+  width: 100%;
+  margin: -12px 0 32px;
+  padding: 18px 22px;
+  border: 1px solid var(--gray-border);
+  border-radius: 18px;
+  background-color: var(--gray-light);
+  color: var(--black);
+}
+
+.search-feedback p {
+  margin-bottom: 6px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.search-feedback span {
+  display: block;
+  margin-bottom: 12px;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.search-feedback a {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--black);
+  text-decoration: underline;
+}
+
+.search-feedback-empty {
+  border-style: dashed;
+}
+
+.empty-message {
+  color: #666;
+  margin-top: 10px;
+  font-size: 14px;
+}
