@@ -666,6 +666,24 @@ footer .integrantes p {
   max-width: 400px;
 }
 
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+  background-color: #edd4d4;
+  color: #571515;
+  border: 1px solid #e6c3c3;
+}
+
 .error-msg {
   color: var(--danger);
   font-size: 13px;

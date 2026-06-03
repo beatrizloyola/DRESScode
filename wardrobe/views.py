@@ -246,13 +246,17 @@ def my_account(request):
         new_password = request.POST.get('new-password')
         current_password = request.POST.get('current-password')
 
-        # Atualiza dados básicos
+        # Atualiza dados básicos sempre
         user.first_name = name
         user.username = email
         user.email = email
-        
+        user.save()
+
         # Atualiza senha se fornecida
         if new_password and new_password.strip() != "":
+            if not current_password:
+                messages.error(request, 'Informe a senha atual para alterá-la.')
+                return redirect('my_account')
             if check_password(current_password, user.password):
                 user.set_password(new_password)
                 user.save()
@@ -261,9 +265,7 @@ def my_account(request):
             else:
                 messages.error(request, 'A senha atual fornecida está incorreta.')
                 return redirect('my_account')
-        else:
-            user.save()
-            
+
         messages.success(request, 'Suas informações foram atualizadas com sucesso!')
         return redirect('my_account')
 
