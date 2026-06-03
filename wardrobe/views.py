@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import check_password
 from .models import Piece, Outfit
 import json
 import base64
@@ -243,6 +244,7 @@ def my_account(request):
         name = request.POST.get('name')
         email = request.POST.get('email')
         new_password = request.POST.get('new-password')
+        current_password = request.POST.get('current-password')
 
         # Atualiza dados básicos
         user.first_name = name
@@ -251,10 +253,14 @@ def my_account(request):
         
         # Atualiza senha se fornecida
         if new_password and new_password.strip() != "":
-            user.set_password(new_password)
-            user.save()
-            # Impede que o usuário seja deslogado ao mudar a senha
-            update_session_auth_hash(request, user)
+            if check_password(current_password, user.password):
+                user.set_password(new_password)
+                user.save()
+                # Impede que o usuário seja deslogado ao mudar a senha
+                update_session_auth_hash(request, user)
+            else:
+                messages.error(request, 'A senha atual fornecida está incorreta.')
+                return redirect('my_account')
         else:
             user.save()
             

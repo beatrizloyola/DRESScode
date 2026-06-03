@@ -36,9 +36,15 @@
       {% if messages %}
         <div role="status" aria-live="polite">
           {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}" style="padding: 15px; margin-bottom: 20px; border-radius: 8px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;">
-              {{ message }}
-            </div>
+            {% if message.tags == 'success' %}
+              <div class="alert alert-{{ message.tags }}" style="padding: 15px; margin-bottom: 20px; border-radius: 8px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;">
+                {{ message }}
+              </div>
+            {% elif message.tags == 'error' %}
+              <div class="alert alert-{{ message.tags }}" style="padding: 15px; margin-bottom: 20px; border-radius: 8px; background-color: #edd4d4; color: #571515; border: 1px solid #e6c3c3;">
+                {{ message }}
+              </div>
+            {% endif %}
           {% endfor %}
         </div>
       {% endif %}
@@ -75,6 +81,19 @@
         </div>
 
         <h2 class="section-title mt-4">Segurança</h2>
+
+        <div class="input-group">
+          <label for="current-password">Senha atual</label>
+          <input 
+            type="password" 
+            id="current-password" 
+            name="current-password" 
+            placeholder="Deixe em branco para não alterar"
+            autocomplete="current-password"
+            aria-describedby="password-help"
+            style="margin-bottom: 0px"
+          ><br>
+        </div>
 
         <div class="input-group">
           <label for="new-password">Nova Senha</label>
