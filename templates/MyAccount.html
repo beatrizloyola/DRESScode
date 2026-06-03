@@ -36,15 +36,9 @@
       {% if messages %}
         <div role="status" aria-live="polite">
           {% for message in messages %}
-            {% if message.tags == 'success' %}
-              <div class="alert alert-{{ message.tags }}" style="padding: 15px; margin-bottom: 20px; border-radius: 8px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;">
-                {{ message }}
-              </div>
-            {% elif message.tags == 'error' %}
-              <div class="alert alert-{{ message.tags }}" style="padding: 15px; margin-bottom: 20px; border-radius: 8px; background-color: #edd4d4; color: #571515; border: 1px solid #e6c3c3;">
-                {{ message }}
-              </div>
-            {% endif %}
+            <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+            </div>
           {% endfor %}
         </div>
       {% endif %}
@@ -84,15 +78,17 @@
 
         <div class="input-group">
           <label for="current-password">Senha atual</label>
-          <input 
-            type="password" 
-            id="current-password" 
-            name="current-password" 
-            placeholder="Deixe em branco para não alterar"
+          <input
+            type="password"
+            id="current-password"
+            name="current-password"
+            placeholder="Obrigatório para alterar a senha"
             autocomplete="current-password"
-            aria-describedby="password-help"
-            style="margin-bottom: 0px"
-          ><br>
+            aria-describedby="current-password-help"
+          >
+          <span id="current-password-help" class="sr-only">
+            Necessário quando quiser alterar sua senha.
+          </span>
         </div>
 
         <div class="input-group">
