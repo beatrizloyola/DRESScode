@@ -79,6 +79,7 @@
 
   </main>
 
+  <script src="{% static 'js/outfit-utils.js' %}"></script>
   <script>
     const shirtList = {{ shirts_json|safe }};
     const pantsList = {{ pants_json|safe }};
@@ -299,41 +300,40 @@
     }
 
     function saveLook() {
-    if (nameInput.value.trim() === '') {
-        noNameMsg.textContent = 'Adicione um nome para o seu look.';
-        nameInput.setAttribute('aria-invalid', 'true');
-        noNameError = true;
-        nameInput.focus();
-        return;
-    }
+        if (nameInput.value.trim() === '') {
+            noNameMsg.textContent = 'Adicione um nome para o seu look.';
+            nameInput.setAttribute('aria-invalid', 'true');
+            noNameError = true;
+            nameInput.focus();
+            return;
+        }
 
-        const arrows = document.querySelectorAll('.arrowBack, .arrowFoward');
+        setLoadingState(true);
+
         const originalBg = lookPreview.style.backgroundColor;
 
-        arrows.forEach(arrow => arrow.style.visibility = 'hidden');
         lookPreview.style.backgroundColor = 'transparent';
 
         html2canvas(lookPreview, {
-            useCORS: true, 
+            useCORS: true,
             backgroundColor: null
         }).then(canvas => {
-            arrows.forEach(arrow => arrow.style.visibility = 'visible');
             lookPreview.style.backgroundColor = originalBg;
 
             const base64Image = canvas.toDataURL('image/png');
-            
+
             const formData = new FormData();
             formData.append('name', nameInput.value.trim());
             formData.append('tags', tags.join(', '));
             formData.append('image', base64Image);
-            
+
             // Enviando as peças de novo se a pessoa quiser trocar algo na edição!
             if (shirtList.length > 0) formData.append('shirt_id', shirtList[shirtLvl].id);
             if (pantsList.length > 0) formData.append('pants_id', pantsList[pantsLvl].id);
             if (shoesList.length > 0) formData.append('shoes_id', shoesList[shoesLvl].id);
-            
+
             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-            
+
             fetch("{% url 'edit_outfit' outfit.id %}", {
                 method: 'POST',
                 headers: {
@@ -341,12 +341,24 @@
                 },
                 body: formData
             }).then(response => {
-                if(response.ok) {
-                    window.location.href = "{% url 'dashboard' %}";
+                if (response.ok) {
+                    showToast('Outfit atualizado com sucesso!', 'success');
+                    setLoadingState(false);
+                    setTimeout(() => {
+                        window.location.href = "{% url 'dashboard' %}";
+                    }, REDIRECT_DELAY);
                 } else {
-                    alert("Erro ao atualizar o look.");
+                    response.body?.cancel();
+                    showToast('Erro ao atualizar o outfit. Tente novamente.', 'error');
+                    setLoadingState(false);
                 }
+            }).catch(() => {
+                showToast('Erro ao atualizar o outfit. Tente novamente.', 'error');
+                setLoadingState(false);
             });
+        }).catch(() => {
+            showToast('Erro ao gerar a imagem do look. Tente novamente.', 'error');
+            setLoadingState(false);
         });
     }
   </script>
