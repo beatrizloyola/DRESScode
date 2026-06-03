@@ -22,10 +22,12 @@ def signup_page(request):
         confirm_password = request.POST.get('confirm_password')
 
         if password != confirm_password:
-            return render(request, 'SignUp.html', {'error': 'As senhas não coincidem. Tente novamente.'})
-        
+            messages.error(request, 'As senhas não coincidem. Tente novamente.')
+            return render(request, 'SignUp.html')
+
         if User.objects.filter(username=email).exists():
-            return render(request, 'SignUp.html', {'error': 'Este e-mail já está cadastrado.'})
+            messages.error(request, 'Este e-mail já está cadastrado.')
+            return render(request, 'SignUp.html')
 
         user = User.objects.create_user(
             username=email, 
@@ -51,7 +53,8 @@ def login_page(request):
             login(request, user)
             return redirect('dashboard')
         else:
-            return render(request, 'Login.html', {'error': 'E-mail ou senha incorretos.'})
+            messages.error(request, 'E-mail ou senha incorretos.')
+            return render(request, 'Login.html')
 
     return render(request, 'Login.html')
 
@@ -92,7 +95,8 @@ def add_piece_page(request):
             )
             return redirect('my_pieces')
         else:
-            return render(request, 'NewPiece.html', {'error': 'Por favor, insira a imagem e a categoria.'})
+            messages.error(request, 'Por favor, insira a imagem e a categoria.')
+            return render(request, 'NewPiece.html')
 
     return render(request, 'NewPiece.html')
 
@@ -169,7 +173,7 @@ def add_outfit_page(request):
             )
             
             novo_outfit.image.save(filename, data, save=True)
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success', 'message': 'Outfit salvo com sucesso!'})
         return JsonResponse({'status': 'error', 'message': 'Faltam dados'})
 
     pieces = Piece.objects.filter(user=request.user)
@@ -220,7 +224,8 @@ def edit_outfit_page(request, outfit_id):
             outfit.shoes_id = shoes_id if shoes_id and shoes_id != 'null' else None
             
             outfit.image.save(filename, data, save=True)
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success', 'message': 'Outfit atualizado com sucesso!'})
+        return JsonResponse({'status': 'error', 'message': 'Faltam dados'})
 
     pieces = Piece.objects.filter(user=request.user)
     

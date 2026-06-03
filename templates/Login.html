@@ -29,31 +29,16 @@
       </p>
 
       {% if messages %}
-        {% for message in messages %}
-          <p
-            class="success-msg"
-            role="status"
-            aria-live="polite"
-            style="text-align: center; margin-bottom: 15px; font-weight: bold; color: #2e7d32;"
-          >
-            {{ message }}
-          </p>
-        {% endfor %}
+        <div role="status" aria-live="polite">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
       {% endif %}
 
-      {% if error %}
-        <p 
-          id="login-error" 
-          class="error-msg" 
-          role="alert" 
-          aria-live="assertive"
-          style="text-align: center; margin-bottom: 15px; font-weight: bold;"
-        >
-          {{ error }}
-        </p>
-      {% endif %}
-
-      <form method="POST" action="" aria-describedby="login-description{% if error %} login-error{% endif %}">
+      <form method="POST" action="" aria-describedby="login-description">
         {% csrf_token %}
         
         <div class="input-group">
