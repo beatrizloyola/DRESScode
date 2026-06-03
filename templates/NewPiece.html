@@ -27,15 +27,14 @@
       <h1>Adicionar Peça</h1>
       <p id="form-description">Faça o upload de uma nova peça para o seu guarda-roupa.</p>
 
-      {% if error %}
-        <p 
-          class="error-msg" 
-          role="alert" 
-          aria-live="assertive"
-          style="text-align: center; margin-bottom: 15px; font-weight: bold;"
-        >
-          {{ error }}
-        </p>
+      {% if messages %}
+        <div role="status" aria-live="polite">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
       {% endif %}
 
       <form method="POST" action="" enctype="multipart/form-data" aria-describedby="form-description">
