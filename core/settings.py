@@ -17,7 +17,7 @@ if os.path.exists(os.path.join(BASE_DIR, '.env')):
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['.onrender.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['.onrender.com', '.railway.app', '127.0.0.1', 'localhost']
 
 # 2. Aplicativos Instalados (A ordem aqui é CRUCIAL)
 INSTALLED_APPS = [
