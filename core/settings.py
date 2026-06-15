@@ -21,14 +21,14 @@ ALLOWED_HOSTS = ['.onrender.com', '.railway.app', '127.0.0.1', 'localhost']
 
 # 2. Aplicativos Instalados (A ordem aqui é CRUCIAL)
 INSTALLED_APPS = [
-    'cloudinary_storage',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
+    'cloudinary',
     'wardrobe',
 ]
 
