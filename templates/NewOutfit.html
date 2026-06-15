@@ -27,7 +27,7 @@
   <main class="editor-content">
     <h1 class="sr-only">Criar novo outfit</h1>
     
-    <div class="lookPreview" id="lookPreview" style="background-color: white;" aria-label="Pré-visualização do outfit">
+    <div class="lookPreview lookPreview-white" id="lookPreview" aria-label="Pré-visualização do outfit">
       <div class="shirt editor-row">
         <button type="button" class="arrowBack" id="shirtBack" aria-label="Camisa anterior"></button>
         <div class="preview" id="shirtPreview"></div>
@@ -67,7 +67,7 @@
       </div>
 
       <div class="completeArea">
-        <a href="{% url 'dashboard' %}" class="btn btn-outline" id="back" style="text-decoration:none; text-align:center;">Cancelar</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline" id="back">Cancelar</a>
         {% csrf_token %}
         <button type="button" class="btn btn-primary" id="save">Salvar</button>
       </div>
