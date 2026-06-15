@@ -1,9 +1,7 @@
 ![DRESScode Banner](https://i.ibb.co/0RDQQqHS/dresscode-Banner.png)
 <h1 align='center'>
-DRESScode</br>★</br></br>
+DRESScode</br>★</br>
 </h1>
-
-</br></br>
 
 ## Descrição
 O DRESScode surge com o objetivo de permitir ao usuário visualizar, organizar e montar “looks” de forma dinâmica, interativa e eficiente antes de se vestir, funcionando como um verdadeiro ‘stylist’ digital. Além disso, a plataforma possibilita salvar, gerenciar e descrever combinações de acordo com as preferências do usuário.
