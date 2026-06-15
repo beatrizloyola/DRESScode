@@ -367,3 +367,80 @@ class TestOutfitViews(TestCase):
         response = self.client.post(reverse('delete_outfit', args=[self.outfit.id]))
         self.assertEqual(response.status_code, 404)
         self.assertTrue(Outfit.objects.filter(id=self.outfit.id).exists())
+
+
+class TestAccountView(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='user@test.com',
+            email='user@test.com',
+            password='senhaAtual123',
+            first_name='Maria',
+        )
+        self.client.force_login(self.user)
+        self.url = reverse('my_account')
+
+    def _post(self, **kwargs):
+        data = {
+            'name': self.user.first_name,
+            'email': self.user.email,
+            'new-password': '',
+            'current-password': '',
+        }
+        data.update(kwargs)
+        return self.client.post(self.url, data)
+
+    # --- update name/email ---
+
+    def test_update_name_and_email(self):
+        response = self._post(name='Ana', email='ana@test.com')
+        self.assertRedirects(response, self.url)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.first_name, 'Ana')
+        self.assertEqual(self.user.email, 'ana@test.com')
+        self.assertEqual(self.user.username, 'ana@test.com')
+
+    def test_update_shows_success_message(self):
+        response = self.client.post(self.url, {
+            'name': self.user.first_name,
+            'email': self.user.email,
+            'new-password': '',
+            'current-password': '',
+        }, follow=True)
+        msgs = list(response.context['messages'])
+        self.assertTrue(any('sucesso' in str(m).lower() for m in msgs))
+
+    # --- password change ---
+
+    def test_change_password_success(self):
+        response = self._post(
+            **{'new-password': 'novaSenha456', 'current-password': 'senhaAtual123'}
+        )
+        self.assertRedirects(response, self.url)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password('novaSenha456'))
+
+    def test_change_password_keeps_session(self):
+        self._post(**{'new-password': 'novaSenha456', 'current-password': 'senhaAtual123'})
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.wsgi_request.user.is_authenticated)
+
+    def test_change_password_wrong_current(self):
+        response = self._post(
+            **{'new-password': 'novaSenha456', 'current-password': 'errada'}
+        )
+        self.assertRedirects(response, self.url)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password('senhaAtual123'))
+
+    def test_change_password_no_current_provided(self):
+        response = self._post(**{'new-password': 'novaSenha456', 'current-password': ''})
+        self.assertRedirects(response, self.url)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password('senhaAtual123'))
+
+    def test_account_requires_login(self):
+        self.client.logout()
+        response = self.client.get(self.url)
+        self.assertRedirects(response, f"{reverse('login')}?next={self.url}")
