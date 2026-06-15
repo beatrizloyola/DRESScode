@@ -1,27 +1,17 @@
-/* ==========================================================================
-                                   DRESScode.
-   ========================================================================== */
-
-/* ── 1. RESET E VARIÁVEIS GLOBAIS ── */
-*, *::before, *::after { 
-  box-sizing: border-box; 
-  margin: 0; 
-  padding: 0; 
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 :root {
-  /* Cores */
   --black: #111;
   --white: #fff;
   --gray-light: #f4f4f4;
   --gray-border: #e0e0e0;
   --gray-text: #666;
   --danger: #d41313;
-  
-  /* Medidas */
   --radius-btn: 30px;
-  
-  /* Tipografia */
   --font-main: 'Encode Sans Expanded', sans-serif;
   --font-serif: 'Playfair Display', serif;
 }
@@ -36,9 +26,6 @@ body {
   flex-direction: column;
 }
 
-/* ── 2. COMPONENTES COMPARTILHADOS ── */
-
-/* Botões */
 .btn {
   font-family: var(--font-main);
   font-size: clamp(14px, 1.5vw, 16px);
@@ -52,8 +39,8 @@ body {
   text-align: center;
 }
 
-.btn:hover { 
-  opacity: 0.75; 
+.btn:hover {
+  opacity: 0.75;
 }
 
 .btn-primary {
@@ -68,7 +55,6 @@ body {
   border: 1.5px solid var(--black);
 }
 
-/* Identidade Visual (Logo em texto) */
 .brand-logo {
   font-size: 24px;
   text-decoration: none;
@@ -78,21 +64,19 @@ body {
   gap: 6px;
 }
 
-/* Ajuste para o Logo em Imagem na Navegação */
 .brand-logo img {
-  height: 48px; /* Ajuste este valor para deixar o logo maior ou menor */
+  height: 48px;
   width: auto;
   object-fit: contain;
   display: block;
 }
 
-/* ── 3. NAVEGAÇÃO (HEADER) ── */
 nav {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
   display: flex;
-  justify-content: space-between; /* Padrão para o Dashboard */
+  justify-content: space-between;
   align-items: center;
   gap: 12px;
   padding: 18px 40px;
@@ -101,12 +85,10 @@ nav {
   border-bottom: 1px solid rgba(0, 0, 0, 0.14);
 }
 
-/* Modificador para a Landing Page (alinha botões à direita) */
 nav.nav-landing {
   justify-content: flex-end;
 }
 
-/* Barra de Pesquisa (Dashboard) */
 .search-container {
   position: relative;
   flex-grow: 1;
@@ -142,38 +124,34 @@ nav.nav-landing {
   cursor: pointer;
 }
 
-/* ── 4. ÁREA PRINCIPAL DO DASHBOARD ── */
 main.dashboard-content {
-  padding: 120px 40px 60px; /* Compensa o menu fixo */
+  padding: 120px 40px 60px;
   max-width: 1200px;
   margin: 0 auto;
-  flex-grow: 1; /* Empurra o footer para o final da página */
+  flex-grow: 1;
   width: 100%;
 }
 
 .outfit-grid {
   display: grid;
-  /* Cria exatamente 3 colunas de tamanhos iguais */
-  grid-template-columns: repeat(3, 1fr); 
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* Para não quebrar em celulares, adicionamos essa regra */
 @media (max-width: 900px) {
   .outfit-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 colunas em tablets */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 600px) {
   .outfit-grid {
-    grid-template-columns: 1fr; /* 1 coluna em celulares */
+    grid-template-columns: 1fr;
   }
 }
 
-/* Cards do Dashboard */
 .card {
   display: flex;
   flex-direction: column;
@@ -186,21 +164,20 @@ main.dashboard-content {
 }
 
 .card-image-box {
-  background-color: var(--gray-light); /* Fundo branco para combinar com o "manequim" */
+  position: relative;
+  background-color: var(--gray-light);
   border-radius: 16px;
   width: 100%;
-  height: 300px; /* Altura fixa para todos os cards serem iguais */
+  height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
   overflow: hidden;
   border: 1px solid var(--gray-border);
-  
-  /* Garante que o look apareça inteiro sem esticar */
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain; 
+  background-size: contain;
   padding: 20px;
 }
 
@@ -223,28 +200,9 @@ main.dashboard-content {
 }
 
 .tag {
-  background-color: var(--gray-light);
-  color: var(--gray-text);
-  font-size: 11px;
-  padding: 4px 12px;
-  border-radius: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
-}
-
-.tag:hover {
-  background-color: var(--black);
-  color: var(--white);
-  border-color: var(--black);
-}
-
-/* Seletor mais específico para garantir que funcione em links */
-a.tag, .tag {
-  display: inline-block; /* Garante que o padding funcione bem */
-  background-color: var(--gray-light) !important; /* !important garante a base */
-  color: #666 !important;
+  display: inline-block;
+  background-color: var(--gray-light) !important;
+  color: var(--gray-text) !important;
   font-size: 11px;
   padding: 4px 12px;
   border-radius: 20px;
@@ -255,72 +213,74 @@ a.tag, .tag {
   text-decoration: none !important;
 }
 
-/* Hover com especificidade reforçada */
-a.tag:hover {
+.tag:hover {
   background-color: var(--black) !important;
   color: var(--white) !important;
   border-color: var(--black) !important;
-  transform: translateY(-2px); /* Efeito extra de levante */
+  transform: translateY(-2px);
 }
 
 .tagList {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px; /* Este é o espaçamento entre as tags */
-    margin-top: 10px;
-    align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
+  align-items: center;
 }
 
-/* Estilo base para todas as tags e o botão de adicionar */
 .tagList .tag {
-    display: inline-block;
-    padding: 6px 18px;
-    border-radius: var(--radius-btn);
-    font-size: 13px;
-    letter-spacing: 0.03em;
-    transition: all 0.2s ease;
-    border: 1px solid var(--gray-border);
-    background-color: var(--gray-light);
-    color: #5b5b5b;
-    text-decoration: none;
-    margin: 0; /* O gap já cuida do espaçamento */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 32px;
+  padding: 6px 18px;
+  border-radius: var(--radius-btn);
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  transition: all 0.2s ease;
+  border: 1px solid var(--gray-border);
+  background-color: var(--gray-light);
+  color: #5b5b5b;
+  text-decoration: none;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
 }
 
-/* COMPORTAMENTO DE EXCLUSÃO: Apenas para tags que NÃO são o botão de adicionar */
 .add-tag-btn {
-    padding: 6px 15px;
-    white-space: nowrap;
+  padding: 6px 15px;
+  white-space: nowrap;
+  border-style: dashed;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.add-tag-btn:hover {
+  background-color: var(--gray-border);
 }
 
 .tagList .tag:not(.add-tag-btn):hover {
-    background-color: var(--danger) !important;
-    color: white !important;
-    border-color: var(--danger) !important;
+  background-color: var(--danger) !important;
+  color: white !important;
+  border-color: var(--danger) !important;
 }
 
 .tagList .tag:not(.add-tag-btn):hover::after {
-    content: ' ✕';
-    font-size: 10px;
-    margin-left: 5px;
+  content: ' ✕';
+  font-size: 10px;
+  margin-left: 5px;
 }
 
-/* COMPORTAMENTO DO BOTÃO ADICIONAR: Visual diferenciado */
 .tagList .add-tag-btn {
-    border-style: dashed;
-    border-color: var(--black);
-    color: var(--black);
-    background-color: transparent;
-    font-weight: 600;
+  border-style: dashed;
+  border-color: var(--black);
+  color: var(--black);
+  background-color: transparent;
+  font-weight: 600;
 }
 
 .tagList .add-tag-btn:hover {
-    background-color: var(--black) !important;
-    color: var(--white) !important;
-    border-style: solid;
+  background-color: var(--black) !important;
+  color: var(--white) !important;
+  border-style: solid;
 }
 
 .sr-only {
@@ -335,7 +295,6 @@ a.tag:hover {
   border: 0;
 }
 
-/* ── 5. ÁREA DA LANDING PAGE ── */
 .hero {
   padding-top: 100px;
   display: flex;
@@ -347,7 +306,7 @@ a.tag:hover {
 
 .hero .logo-wrap {
   width: clamp(200px, 20vw, 3000px);
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .hero .logo-wrap img {
@@ -364,7 +323,6 @@ a.tag:hover {
   margin-top: 4px;
 }
 
-/* Carrossel de Roupas */
 .clothes-strip {
   width: 100%;
   overflow: hidden;
@@ -381,12 +339,16 @@ a.tag:hover {
 
 .strip-track:hover { animation-play-state: paused; }
 
-.strip-track img {
-  height: clamp(140px, 22vw, 240px);
+.strip-track img,
+.pants-track img {
   width: auto;
   object-fit: contain;
   flex-shrink: 0;
   display: block;
+}
+
+.strip-track img {
+  height: clamp(140px, 22vw, 240px);
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 
@@ -417,10 +379,6 @@ a.tag:hover {
 
 .pants-track img {
   height: clamp(200px, 30vw, 340px);
-  width: auto;
-  object-fit: contain;
-  flex-shrink: 0;
-  display: block;
   transition: transform 0.3s ease;
 }
 
@@ -428,7 +386,6 @@ a.tag:hover {
   transform: scale(1.06) translateY(-4px);
 }
 
-/* Efeito de gradiente nas bordas do carrossel */
 .clothes-strip::before,
 .clothes-strip::after {
   content: '';
@@ -449,9 +406,8 @@ a.tag:hover {
   background: linear-gradient(to left, #fff, transparent);
 }
 
-/* ── 6. RODAPÉ (FOOTER) ── */
 footer {
-  margin-top: auto; /* Empurra para baixo se a página for curta */
+  margin-top: auto;
   padding: 40px;
   border-top: 1px solid var(--gray-border);
   display: flex;
@@ -481,55 +437,50 @@ footer .integrantes p {
   letter-spacing: 0.05em;
 }
 
-/* ── 7. RESPONSIVIDADE ── */
 @media (max-width: 768px) {
-  /* Navegação */
   nav, nav.nav-landing {
     flex-direction: column;
     justify-content: center;
     gap: 16px;
     padding: 16px 20px;
   }
-  
+
   .search-container {
     width: 100%;
     max-width: 100%;
     margin: 0;
     order: 3;
   }
-  
-  /* Estrutura */
+
   main.dashboard-content {
     padding: 180px 20px 40px;
   }
-  
-  /* Rodapé */
-  footer { 
-    padding: 28px 20px; 
-    flex-direction: column; 
-    align-items: flex-start; 
+
+  footer {
+    padding: 28px 20px;
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
 @media (max-width: 600px) {
-  .btn { 
-    padding: 8px 18px; 
-    font-size: 13px; 
+  .btn {
+    padding: 8px 18px;
+    font-size: 13px;
   }
 }
 
-/* ── 8. PÁGINAS DE AUTENTICAÇÃO (LOGIN / REGISTRO) ── */
 .auth-content {
   padding: 120px 20px 60px;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: 1; /* Centraliza verticalmente junto com o body flex */
+  flex-grow: 1;
 }
 
 .auth-box {
   width: 100%;
-  max-width: 380px; /* Mantém o formulário num tamanho elegante */
+  max-width: 380px;
   text-align: center;
 }
 
@@ -546,7 +497,6 @@ footer .integrantes p {
   margin-bottom: 32px;
 }
 
-/* Campos de Formulário */
 .input-group {
   display: flex;
   flex-direction: column;
@@ -561,7 +511,8 @@ footer .integrantes p {
   color: var(--black);
 }
 
-.input-group input {
+.input-group input,
+.input-group select {
   width: 100%;
   padding: 12px 20px;
   border: 1.5px solid var(--gray-border);
@@ -574,11 +525,15 @@ footer .integrantes p {
   transition: border-color 0.2s;
 }
 
-.input-group input:focus {
+.input-group input:focus,
+.input-group select:focus {
   border-color: var(--black);
 }
 
-/* Link de Esqueceu a senha */
+.input-group select {
+  cursor: pointer;
+}
+
 .forgot-password {
   display: block;
   text-align: right;
@@ -593,15 +548,13 @@ footer .integrantes p {
   color: var(--black);
 }
 
-/* Utilitário para o botão ocupar a largura toda do formulário */
 .btn-full {
   width: 100%;
-  padding: 14px 28px; /* Um pouco mais gordinho pra ficar elegante */
+  padding: 14px 28px;
 }
 
-/* ── 9. EDITOR DE LOOKS ── */
 .editor-content {
-  padding: 120px 40px 60px; /* Compensa o menu fixo */
+  padding: 120px 40px 60px;
   display: flex;
   flex-wrap: wrap;
   gap: 80px;
@@ -613,7 +566,6 @@ footer .integrantes p {
   width: 100%;
 }
 
-/* Área de Visualização (Manequim) */
 .lookPreview {
   display: flex;
   flex-direction: column;
@@ -645,11 +597,14 @@ footer .integrantes p {
 #pantsPreview { height: 300px; }
 #shoesPreview { height: 100px; }
 
-/* Setas de Navegação */
 .arrowFoward, .arrowBack {
   cursor: pointer;
   transition: transform 0.2s ease, opacity 0.2s ease;
   opacity: 0.5;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
 }
 
 .arrowFoward:hover, .arrowBack:hover {
@@ -658,18 +613,13 @@ footer .integrantes p {
 }
 
 .arrowFoward {
-  width: 0; height: 0;
-  border-top: 10px solid transparent; border-bottom: 10px solid transparent;
   border-left: 15px solid var(--black);
 }
 
 .arrowBack {
-  width: 0; height: 0;
-  border-top: 10px solid transparent; border-bottom: 10px solid transparent;
   border-right: 15px solid var(--black);
 }
 
-/* Informações do Look (Formulário Lateral) */
 .lookInfo {
   display: flex;
   flex-direction: column;
@@ -703,16 +653,6 @@ footer .integrantes p {
   min-height: 16px;
 }
 
-.add-tag-btn {
-  border-style: dashed;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.add-tag-btn:hover {
-  background-color: var(--gray-border);
-}
-
 .completeArea {
   display: flex;
   gap: 16px;
@@ -720,10 +660,9 @@ footer .integrantes p {
 }
 
 .completeArea .btn {
-  flex: 1; /* Faz os botões dividirem o espaço igualmente */
+  flex: 1;
 }
 
-/* Animações (Importadas do ficheiro original) */
 .animateOutToRight { animation: slideOutToRight 0.1s ease-in; }
 @keyframes slideOutToRight {
   from { opacity: 1; transform: translateX(0) scale(1); }
@@ -748,7 +687,6 @@ footer .integrantes p {
   to { opacity: 1; transform: translateX(0) scale(1); }
 }
 
-/* Responsividade do Editor */
 @media (max-width: 900px) {
   .editor-content {
     gap: 40px;
@@ -759,12 +697,10 @@ footer .integrantes p {
   }
 }
 
-/* ── 10. UPLOAD DE PEÇAS ── */
 .upload-box {
-  max-width: 440px; /* Um pouco mais largo para acomodar bem a foto */
+  max-width: 440px;
 }
 
-/* Caixa pontilhada para arrastar a foto */
 .upload-dropzone {
   width: 100%;
   aspect-ratio: 4/4.5;
@@ -812,40 +748,16 @@ footer .integrantes p {
   fill: var(--black);
 }
 
-/* Div que recebe o background da imagem no JS */
 .image-preview {
   position: absolute;
-  top: 0; left: 0; 
+  top: 0; left: 0;
   width: 100%; height: 100%;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: var(--white);
+  background: var(--white) no-repeat center/contain;
   display: none;
   z-index: 2;
-  pointer-events: none; /* Permite clicar através do preview para trocar a foto */
+  pointer-events: none;
 }
 
-/* Estilo do Dropdown (Select) */
-.input-group select {
-  width: 100%;
-  padding: 12px 20px;
-  border: 1.5px solid var(--gray-border);
-  border-radius: var(--radius-btn);
-  font-family: var(--font-main);
-  font-size: clamp(14px, 1.5vw, 15px);
-  color: var(--black);
-  outline: none;
-  background-color: var(--white);
-  transition: border-color 0.2s;
-  cursor: pointer;
-}
-
-.input-group select:focus {
-  border-color: var(--black);
-}
-
-/* ── 11. MINHA CONTA (CONFIGURAÇÕES) ── */
 .account-content {
   padding: 120px 20px 60px;
   display: flex;
@@ -855,7 +767,7 @@ footer .integrantes p {
 
 .settings-container {
   width: 100%;
-  max-width: 540px; /* Um pouco mais largo que o login para conforto visual */
+  max-width: 540px;
   background-color: var(--white);
 }
 
@@ -888,19 +800,19 @@ footer .integrantes p {
 }
 
 .mt-4 {
-  margin-top: 40px; /* Classe utilitária para dar um espaço extra */
+  margin-top: 40px;
 }
 
-/* Ações Finais (Salvar e Sair) */
 .account-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 40px;
+  gap: 20px;
 }
 
 .logout-link {
-  color: var(--danger); /* Um tom de vermelho elegante para indicar saída/perigo */
+  color: var(--danger);
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
@@ -911,7 +823,6 @@ footer .integrantes p {
   opacity: 0.7;
 }
 
-/* ── 12. GERENCIAMENTO DE PEÇAS (LINHAS E CATEGORIAS) ── */
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -935,7 +846,6 @@ footer .integrantes p {
   font-size: 15px;
 }
 
-/* Títulos das Categorias */
 .category-section {
   margin-bottom: 48px;
   width: 100%;
@@ -950,26 +860,17 @@ footer .integrantes p {
   padding-bottom: 10px;
 }
 
-/* Transformando o container em uma linha com Scroll Horizontal */
 .pieces-row {
   display: flex;
   gap: 24px;
   overflow-x: auto;
-  
-  /* AJUSTE AQUI: Aumentar o padding superior e inferior para acomodar a sombra e o deslocamento */
-  padding: 24px 24px 24px 24px; /* Antes era padding-bottom: 16px */
-  
+  padding: 24px;
   scroll-behavior: smooth;
-  
-  /* Customização básica da barra de rolagem (Firefox) */
-  scrollbar-width: thin; 
+  scrollbar-width: thin;
   scrollbar-color: #ccc transparent;
-  
-  /* Garante que a sombra não seja cortada e que o container externo também não corte */
-  margin-bottom: 24px; /* Espaço extra antes da próxima categoria */
+  margin-bottom: 24px;
 }
 
-/* Customização da barra de rolagem (Chrome/Safari/Edge) */
 .pieces-row::-webkit-scrollbar {
   height: 8px;
 }
@@ -981,10 +882,9 @@ footer .integrantes p {
   border-radius: 10px;
 }
 
-/* Ajustando os cards menores para não encolherem na linha */
 .card-small {
-  flex: 0 0 auto; /* Impede que os cards sejam esmagados juntos */
-  width: 200px;   /* Largura fixa perfeita para a "prateleira" */
+  flex: 0 0 auto;
+  width: 200px;
 }
 
 .card-small .card-image-box {
@@ -1011,32 +911,21 @@ footer .integrantes p {
   padding: 4px 10px;
 }
 
-/* ── 13. BOTÕES DE AÇÃO DOS CARDS (EDITAR/EXCLUIR) ── */
-
-/* Certifique-se de que a caixa da imagem tem position relative */
-.card-image-box {
-  position: relative; 
-  /* ... o resto do seu código de card-image-box continua aqui ... */
-}
-
-/* Container dos botões flutuantes */
 .card-actions {
   position: absolute;
   top: 16px;
   right: 16px;
   display: flex;
   gap: 8px;
-  opacity: 0; /* Invisível por padrão */
+  opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 10;
 }
 
-/* Mostra os botões quando o usuário passa o mouse pelo card */
 .card:hover .card-actions {
   opacity: 1;
 }
 
-/* Estilo individual de cada botão circular */
 .action-btn {
   width: 36px;
   height: 36px;
@@ -1063,30 +952,26 @@ footer .integrantes p {
   transition: fill 0.2s;
 }
 
-/* Detalhe elegante: Lixeira fica vermelha ao passar o mouse */
 .delete-btn:hover svg {
-  fill: var(--danger); 
+  fill: var(--danger);
 }
 
-/* Efeito Hover do Lápis: Fica com a cor da marca (Preto forte) */
 .edit-btn:hover svg {
   fill: #000;
 }
 
-/* Mostrar botões de ação em dispositivos móveis por padrão (onde não tem hover) */
 @media (max-width: 768px) {
   .card-actions {
     opacity: 1;
   }
 }
 
-/* Botão de Logout Estilo Pílula */
 .btn-logout {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 10px 25px;
-  border-radius: var(--radius-btn); /* Usa a variável 30px que você já tem */
+  border-radius: var(--radius-btn);
   border: 1px solid var(--danger);
   background-color: transparent;
   color: var(--danger);
@@ -1105,16 +990,6 @@ footer .integrantes p {
   transform: translateY(-1px);
 }
 
-/* Ajuste de espaçamento no container das ações */
-.account-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 40px;
-  gap: 20px; /* Garante que não grudem em telas menores */
-}
-
-/* Search feedback */
 .search-feedback {
   width: 100%;
   margin: -12px 0 32px;
@@ -1158,7 +1033,6 @@ footer .integrantes p {
   font-size: 14px;
 }
 
-/* ── 14. LOADING E FEEDBACK ── */
 .btn:disabled,
 .btn-disabled {
   opacity: 0.6;
