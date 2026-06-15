@@ -236,3 +236,134 @@ class TestPieceViews(TestCase):
     def test_delete_piece_get_noop(self):
         self.client.get(reverse('delete_piece', args=[self.piece.id]))
         self.assertTrue(Piece.objects.filter(id=self.piece.id).exists())
+
+
+_FAKE_B64_PNG = (
+    'data:image/png;base64,'
+    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk'
+    '+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='
+)
+
+
+class TestOutfitViews(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls._patcher_save = patch(
+            'cloudinary_storage.storage.MediaCloudinaryStorage._save',
+            return_value='outfits/fake.png',
+        )
+        cls._patcher_url = patch(
+            'cloudinary_storage.storage.MediaCloudinaryStorage.url',
+            return_value='https://res.cloudinary.com/fake/image/upload/outfits/fake.png',
+        )
+        cls._patcher_save.start()
+        cls._patcher_url.start()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls._patcher_save.stop()
+        cls._patcher_url.stop()
+        super().tearDownClass()
+
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='u1@test.com', password='pass123')
+        self.user2 = User.objects.create_user(username='u2@test.com', password='pass123')
+        self.client.force_login(self.user1)
+        self.piece = Piece.objects.create(
+            user=self.user1, name='Camiseta', category='shirt', image='pieces/fake.png'
+        )
+        self.outfit = Outfit.objects.create(
+            user=self.user1, name='Look Casual', image='outfits/fake.png', tags='casual,festa'
+        )
+
+    def _outfit_post(self, **kwargs):
+        data = {
+            'name': 'Novo Look',
+            'tags': 'casual',
+            'image': _FAKE_B64_PNG,
+            'shirt_id': 'null',
+            'pants_id': 'null',
+            'shoes_id': 'null',
+        }
+        data.update(kwargs)
+        return data
+
+    # --- add_outfit ---
+
+    def test_add_outfit_success(self):
+        response = self.client.post(reverse('add_outfit'), self._outfit_post(shirt_id=self.piece.id))
+        self.assertEqual(response.json()['status'], 'success')
+        self.assertTrue(Outfit.objects.filter(name='Novo Look', user=self.user1).exists())
+
+    def test_add_outfit_null_ids_become_none(self):
+        self.client.post(reverse('add_outfit'), self._outfit_post(name='Sem Peças'))
+        outfit = Outfit.objects.get(name='Sem Peças', user=self.user1)
+        self.assertIsNone(outfit.shirt)
+        self.assertIsNone(outfit.pants)
+        self.assertIsNone(outfit.shoes)
+
+    def test_add_outfit_missing_data(self):
+        response = self.client.post(reverse('add_outfit'), {'name': '', 'image': ''})
+        self.assertEqual(response.json()['status'], 'error')
+
+    def test_add_outfit_requires_login(self):
+        self.client.logout()
+        response = self.client.get(reverse('add_outfit'))
+        self.assertRedirects(response, f"{reverse('login')}?next={reverse('add_outfit')}")
+
+    # --- dashboard ---
+
+    def test_dashboard_search_by_name(self):
+        Outfit.objects.create(user=self.user1, name='Look Trabalho', image='outfits/fake.png')
+        response = self.client.get(reverse('dashboard'), {'q': 'trabalho'})
+        outfits = list(response.context['outfits'])
+        self.assertEqual(len(outfits), 1)
+        self.assertEqual(outfits[0].name, 'Look Trabalho')
+
+    def test_dashboard_search_by_tag(self):
+        response = self.client.get(reverse('dashboard'), {'q': 'festa'})
+        outfits = list(response.context['outfits'])
+        self.assertEqual(len(outfits), 1)
+        self.assertEqual(outfits[0], self.outfit)
+
+    def test_dashboard_only_own(self):
+        Outfit.objects.create(user=self.user2, name='Outfit Alheio', image='outfits/fake.png')
+        response = self.client.get(reverse('dashboard'))
+        outfits = list(response.context['outfits'])
+        self.assertTrue(all(o.user == self.user1 for o in outfits))
+
+    # --- edit_outfit ---
+
+    def test_edit_outfit_owner(self):
+        response = self.client.post(
+            reverse('edit_outfit', args=[self.outfit.id]),
+            self._outfit_post(name='Look Editado', tags='novo'),
+        )
+        self.assertEqual(response.json()['status'], 'success')
+        self.outfit.refresh_from_db()
+        self.assertEqual(self.outfit.name, 'Look Editado')
+        self.assertEqual(self.outfit.tags, 'novo')
+
+    def test_edit_outfit_other_user(self):
+        self.client.force_login(self.user2)
+        response = self.client.post(
+            reverse('edit_outfit', args=[self.outfit.id]),
+            self._outfit_post(name='Hack'),
+        )
+        self.assertEqual(response.status_code, 404)
+        self.outfit.refresh_from_db()
+        self.assertEqual(self.outfit.name, 'Look Casual')
+
+    # --- delete_outfit ---
+
+    def test_delete_outfit_owner(self):
+        response = self.client.post(reverse('delete_outfit', args=[self.outfit.id]))
+        self.assertRedirects(response, reverse('dashboard'))
+        self.assertFalse(Outfit.objects.filter(id=self.outfit.id).exists())
+
+    def test_delete_outfit_other_user(self):
+        self.client.force_login(self.user2)
+        response = self.client.post(reverse('delete_outfit', args=[self.outfit.id]))
+        self.assertEqual(response.status_code, 404)
+        self.assertTrue(Outfit.objects.filter(id=self.outfit.id).exists())
